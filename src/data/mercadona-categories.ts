@@ -1,0 +1,26 @@
+import type { CategoryInfo } from "@/types/mercadona";
+
+export const MERCADONA_CATEGORIES: CategoryInfo[] = [
+  { id: 38, name: "Aves y pollo", icon: "🍗" },
+  { id: 40, name: "Vacuno", icon: "🥩" },
+  { id: 44, name: "Hamburguesas y picadas", icon: "🍔" },
+  { id: 48, name: "Aves y jamón cocido", icon: "🥓" },
+  { id: 50, name: "Jamón serrano", icon: "🍖" },
+  { id: 51, name: "Embutido curado", icon: "🌭" },
+  { id: 77, name: "Huevos", icon: "🥚" },
+  { id: 72, name: "Leche y bebidas vegetales", icon: "🥛" },
+  { id: 78, name: "Cereales", icon: "🥣" },
+  { id: 79, name: "Tortitas", icon: "🍘" },
+  { id: 118, name: "Arroz", icon: "🍚" },
+  { id: 120, name: "Pasta y fideos", icon: "🍝" },
+  { id: 121, name: "Legumbres", icon: "🫘" },
+  { id: 60, name: "Pan de molde", icon: "🍞" },
+  { id: 122, name: "Atún y conservas", icon: "🐟" },
+  { id: 133, name: "Frutos secos", icon: "🥜" },
+  { id: 27, name: "Fruta", icon: "🍎" },
+  { id: 28, name: "Lechuga y ensalada", icon: "🥬" },
+  { id: 29, name: "Verdura", icon: "🥦" },
+  { id: 103, name: "Yogures", icon: "🥛" },
+  { id: 130, name: "Gazpacho y cremas", icon: "🍅" },
+  { id: 126, name: "Tomate", icon: "🫙" },
+];
