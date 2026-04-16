@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Switch } from "@/components/ui/switch";
+import { Flame, Euro } from "lucide-react";
 import { MealCard } from "./meal-card";
 import { DIET_PLAN } from "@/data/diet-plan";
 import {
   useTrainingDays,
   useToggleTrainingDay,
+  useSelections,
 } from "@/hooks/use-meal-selections";
 import { getCurrentDay, getCurrentMeal, getMealTimeLabel } from "@/lib/time-utils";
+import { calculateDayTotals } from "@/lib/meal-calculator";
 import { cn } from "@/lib/utils";
 import {
   DAYS,
@@ -84,35 +87,58 @@ function DayHeader({
   isToday,
   isTraining,
   onToggleTraining,
+  dayKcal,
+  dayPrice,
 }: {
   day: DayOfWeek;
   isToday: boolean;
   isTraining: boolean;
   onToggleTraining: () => void;
+  dayKcal: number;
+  dayPrice: number;
 }) {
   return (
-    <div className="flex items-center rounded-xl border bg-white px-4 py-3 w-full">
-      <div className="flex items-center gap-2.5">
-        <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-        <span className="text-lg font-bold text-foreground">
-          {DAY_LABELS[day]}
-        </span>
-        {isToday && (
-          <span className="text-[11px] font-semibold text-white bg-orange-500 rounded-full px-2.5 py-0.5">
-            HOY
+    <div className="rounded-xl border bg-white px-4 py-3 w-full space-y-2">
+      <div className="flex items-center">
+        <div className="flex items-center gap-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+          <span className="text-lg font-bold text-foreground">
+            {DAY_LABELS[day]}
           </span>
-        )}
+          {isToday && (
+            <span className="text-[11px] font-semibold text-white bg-orange-500 rounded-full px-2.5 py-0.5">
+              HOY
+            </span>
+          )}
+        </div>
+        <span className="flex-1" />
+        <div className="flex items-center gap-3">
+          <Switch
+            checked={isTraining}
+            onCheckedChange={onToggleTraining}
+          />
+          <span className="text-[13px] font-semibold text-foreground">
+            Entreno
+          </span>
+        </div>
       </div>
-      <span className="flex-1" />
-      <div className="flex items-center gap-3">
-        <Switch
-          checked={isTraining}
-          onCheckedChange={onToggleTraining}
-        />
-        <span className="text-[13px] font-semibold text-foreground">
-          Entreno
-        </span>
-      </div>
+      {dayKcal > 0 && (
+        <div className="flex items-center gap-3 rounded-lg bg-orange-50 px-3 py-2">
+          <div className="flex items-center gap-1.5">
+            <Flame className="h-4 w-4 text-orange-500" />
+            <span className="text-sm font-bold text-foreground">
+              ~{dayKcal.toLocaleString("es-ES")} kcal
+            </span>
+          </div>
+          <span className="text-muted-foreground">·</span>
+          <div className="flex items-center gap-1.5">
+            <Euro className="h-4 w-4 text-emerald-600" />
+            <span className="text-sm font-bold text-foreground">
+              ~{dayPrice.toFixed(2)} €
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -146,6 +172,7 @@ export function WeeklyCalendar() {
   const [currentMeal, setCurrentMeal] = useState<MealType | null>(null);
   const trainingDays = useTrainingDays();
   const toggleTrainingDay = useToggleTrainingDay();
+  const selections = useSelections();
 
   useEffect(() => {
     const current = getCurrentDay();
@@ -162,6 +189,16 @@ export function WeeklyCalendar() {
 
   const isToday = selectedDay === today;
 
+  const dayTotals = useMemo(
+    () =>
+      calculateDayTotals(
+        selectedDay,
+        selections[selectedDay],
+        trainingDays[selectedDay]
+      ),
+    [selectedDay, selections, trainingDays]
+  );
+
   return (
     <div className="space-y-5">
       {/* Day Selector Pills */}
@@ -177,6 +214,8 @@ export function WeeklyCalendar() {
         isToday={isToday}
         isTraining={trainingDays[selectedDay]}
         onToggleTraining={() => toggleTrainingDay(selectedDay)}
+        dayKcal={dayTotals.kcal}
+        dayPrice={dayTotals.price}
       />
 
       {/* Meals - 2 columns on desktop, 1 on mobile */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SupplementBadge } from "./supplement-badge";
 import {
@@ -15,6 +15,8 @@ import {
   Apple,
   TriangleAlert,
   ChevronDown,
+  Flame,
+  Euro,
 } from "lucide-react";
 import type {
   FixedMeal,
@@ -32,6 +34,11 @@ import {
 } from "@/hooks/use-meal-selections";
 import { isMealPast } from "@/lib/time-utils";
 import { cn } from "@/lib/utils";
+import {
+  calculateFixedMealTotals,
+  calculateVariableMealTotals,
+  type MealTotals,
+} from "@/lib/meal-calculator";
 
 interface MealCardProps {
   meal: FixedMeal | VariableMeal;
@@ -94,6 +101,59 @@ function FoodItemRow({ food, muted }: { food: FoodOption; muted?: boolean }) {
         {food.name} {food.quantity}
         {food.quantityCooked && ` (${food.quantityCooked})`}
       </span>
+    </div>
+  );
+}
+
+function MealTotalsBadge({ totals }: { totals: MealTotals }) {
+  if (totals.kcal === 0 && totals.price === 0) return null;
+  return (
+    <div className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-2 mt-1">
+      <div className="flex items-center gap-1">
+        <Flame className="h-3.5 w-3.5 text-orange-500" />
+        <span className="text-xs font-semibold text-foreground">
+          ~{totals.kcal} kcal
+        </span>
+      </div>
+      <span className="text-muted-foreground text-xs">·</span>
+      <div className="flex items-center gap-1">
+        <Euro className="h-3.5 w-3.5 text-emerald-600" />
+        <span className="text-xs font-semibold text-foreground">
+          ~{totals.price.toFixed(2)} €
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ProteinSubSelector({
+  options,
+  selectedIndex,
+  onSelect,
+}: {
+  options: FoodOption[];
+  selectedIndex: number;
+  onSelect: (index: number) => void;
+}) {
+  if (options.length <= 1) return null;
+  return (
+    <div className="pl-8 pt-1 pb-1 space-y-0.5">
+      {options.map((p, j) => (
+        <button
+          key={j}
+          type="button"
+          onClick={() => onSelect(j)}
+          className={cn(
+            "flex items-center gap-2 w-full text-left px-2 py-1 rounded-md text-[13px] transition-colors",
+            selectedIndex === j
+              ? "bg-orange-100 text-foreground font-medium"
+              : "text-muted-foreground hover:bg-orange-100/50"
+          )}
+        >
+          {getFoodIcon(p.name)}
+          {p.name}
+        </button>
+      ))}
     </div>
   );
 }
@@ -189,6 +249,11 @@ function FixedMealCard({
     ? [meal.nonTrainingOverride!]
     : meal.options;
 
+  const totals = useMemo(
+    () => calculateFixedMealTotals(meal, selection, isTraining),
+    [meal, selection, isTraining]
+  );
+
   return (
     <div
       className={cn(
@@ -275,6 +340,7 @@ function FixedMealCard({
                 optionId: id,
                 carbIndex: 0,
                 proteinIndex: 0,
+                proteinSubIndex: 0,
               })
             }
             className="space-y-3"
@@ -310,14 +376,32 @@ function FixedMealCard({
                   {opt.protein.options.length > 0 && (
                     <div className="ml-6 mt-2">
                       <p className="text-xs font-semibold text-muted-foreground mb-1">
-                        Proteínas (elegir 1)
+                        Proteína
                       </p>
                       <div className="space-y-0.5">
-                        {opt.protein.options.map((p, i) => (
-                          <p key={i} className="text-xs text-foreground">
-                            • {p.name} {p.quantity}
-                          </p>
-                        ))}
+                        {opt.protein.options.map((p, i) => {
+                          const isProteinSelected =
+                            isSelected && (selection.proteinSubIndex ?? 0) === i;
+                          return (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                onSelect({ ...selection, proteinSubIndex: i });
+                              }}
+                              className={cn(
+                                "block w-full text-left text-xs px-2 py-1 rounded-md transition-colors",
+                                isProteinSelected
+                                  ? "bg-orange-100 text-foreground font-medium"
+                                  : "text-muted-foreground hover:bg-orange-50"
+                              )}
+                            >
+                              {p.name} {p.quantity}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -342,6 +426,9 @@ function FixedMealCard({
               );
             })}
           </RadioGroup>
+
+          {/* Totales kcal / precio */}
+          <MealTotalsBadge totals={totals} />
         </div>
       </div>
     </div>
@@ -378,6 +465,11 @@ function VariableMealCard({
 
   const carbIndex = selection.carbIndex ?? 0;
   const proteinIndex = selection.proteinIndex ?? 0;
+
+  const totals = useMemo(
+    () => calculateVariableMealTotals(meal, day, selection),
+    [meal, day, selection]
+  );
 
   return (
     <div
@@ -462,7 +554,7 @@ function VariableMealCard({
 
           <div className="border-t" />
 
-          {/* Proteína */}
+          {/* Proteína - grupo */}
           <div>
             <p className="text-xs font-semibold text-muted-foreground mb-2">
               Proteína
@@ -470,7 +562,11 @@ function VariableMealCard({
             <RadioGroup
               value={String(proteinIndex)}
               onValueChange={(v) =>
-                onSelect({ ...selection, proteinIndex: parseInt(v) })
+                onSelect({
+                  ...selection,
+                  proteinIndex: parseInt(v),
+                  proteinSubIndex: 0,
+                })
               }
               className="space-y-1"
             >
@@ -478,25 +574,26 @@ function VariableMealCard({
                 <label
                   key={i}
                   className={cn(
-                    "flex items-start gap-2 px-2 py-1.5 rounded-lg text-sm cursor-pointer transition-colors",
-                    proteinIndex === i
-                      ? "bg-orange-50"
-                      : "hover:bg-accent"
+                    "flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm cursor-pointer transition-colors",
+                    proteinIndex === i ? "bg-orange-50" : "hover:bg-accent"
                   )}
                 >
-                  <RadioGroupItem value={String(i)} className="mt-0.5" />
-                  <span className="text-[13px]">
-                    {pGroup.options.map((p, j) => (
-                      <span key={j}>
-                        {j > 0 && " / "}
-                        {p.name}{" "}
-                        <span className="text-muted-foreground">{p.quantity}</span>
-                      </span>
-                    ))}
+                  <RadioGroupItem value={String(i)} className="shrink-0" />
+                  <span className="text-[13px] text-muted-foreground">
+                    {pGroup.options[0]?.quantity}
                   </span>
                 </label>
               ))}
             </RadioGroup>
+
+            {/* Proteína - sub-selección (fuera del RadioGroup) */}
+            <ProteinSubSelector
+              options={dayData.proteinOptions[proteinIndex]?.options ?? []}
+              selectedIndex={selection.proteinSubIndex ?? 0}
+              onSelect={(j) =>
+                onSelect({ ...selection, proteinSubIndex: j })
+              }
+            />
           </div>
 
           {/* Extras */}
@@ -518,6 +615,9 @@ function VariableMealCard({
 
           {/* Warning */}
           {dayData.notes && <WarningBox text={dayData.notes} />}
+
+          {/* Totales kcal / precio */}
+          <MealTotalsBadge totals={totals} />
         </div>
       </div>
     </div>

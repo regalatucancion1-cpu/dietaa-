@@ -80,7 +80,8 @@ export function isVariableMeal(meal: Meal): meal is VariableMeal {
 export interface MealSelection {
   optionId?: string; // para comidas fijas
   carbIndex?: number; // índice de carb elegido
-  proteinIndex?: number; // índice de proteína elegida
+  proteinIndex?: number; // índice de grupo de proteína elegido
+  proteinSubIndex?: number; // índice de proteína específica dentro del grupo
 }
 
 export interface DaySelections {

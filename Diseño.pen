@@ -1,0 +1,1690 @@
+{
+  "version": "2.9",
+  "children": [
+    {
+      "type": "frame",
+      "id": "2r5TT",
+      "x": 890,
+      "y": 0,
+      "name": "Dieta - Vista Vertical",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#FAFAFA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "HIM2K",
+          "name": "Nav Bar",
+          "reusable": true,
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "$D:--border"
+          },
+          "padding": [
+            0,
+            24
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "k38H5",
+              "name": "Nav Left",
+              "height": "fill_container",
+              "gap": 24,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qCmnO",
+                  "name": "Logo",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "YQh2i",
+                      "name": "logoIcon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "utensils-crossed",
+                      "iconFontFamily": "lucide",
+                      "fill": "#F97316"
+                    },
+                    {
+                      "type": "text",
+                      "id": "tJt0l",
+                      "name": "logoText",
+                      "fill": "#0a0a0a",
+                      "content": "Mi Dieta",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4SNw8",
+                  "name": "Nav Tabs",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "6F8PN",
+                      "name": "Tab Active",
+                      "fill": "#FFF7ED",
+                      "cornerRadius": 6,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "LXc2W",
+                          "name": "tab1Text",
+                          "fill": "#F97316",
+                          "content": "Mi Dieta",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "9GmK2",
+                      "name": "Tab",
+                      "cornerRadius": 6,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "qRSzr",
+                          "name": "tab2Text",
+                          "fill": "$D:--muted-foreground",
+                          "content": "Mercadona",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kxRRn",
+                      "name": "Tab",
+                      "cornerRadius": 6,
+                      "padding": [
+                        8,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "YklDP",
+                          "name": "tab3Text",
+                          "fill": "$D:--muted-foreground",
+                          "content": "Lista Compra",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "PAQFS",
+              "name": "navSpacer",
+              "width": "fill_container",
+              "height": 1
+            },
+            {
+              "type": "frame",
+              "id": "vHIS3",
+              "name": "Switch dani/nil",
+              "fill": "#F0F0F0",
+              "cornerRadius": 12,
+              "gap": 2,
+              "padding": 3,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "eTK8L",
+                  "name": "daniBtn",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 10,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#00000015",
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "blur": 3
+                  },
+                  "gap": 6,
+                  "padding": [
+                    4,
+                    10,
+                    4,
+                    4
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "2qSe3",
+                      "name": "daniAvatar",
+                      "width": 22,
+                      "height": 22,
+                      "fill": "#F97316",
+                      "cornerRadius": 9999,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dCsyj",
+                          "name": "daniLetter",
+                          "fill": "#FFFFFF",
+                          "content": "D",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Wuhtz",
+                      "name": "daniName",
+                      "fill": "#0a0a0a",
+                      "content": "Dani",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "TW9Zw",
+                  "name": "nilBtn",
+                  "cornerRadius": 10,
+                  "gap": 6,
+                  "padding": [
+                    4,
+                    10,
+                    4,
+                    4
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "S5N23",
+                      "name": "nilAvatar",
+                      "width": 22,
+                      "height": 22,
+                      "fill": "#2563EB",
+                      "cornerRadius": 9999,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "2sRSx",
+                          "name": "nilLetter",
+                          "fill": "#FFFFFF",
+                          "content": "N",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "sd13g",
+                      "name": "nilName",
+                      "fill": "#737373",
+                      "content": "Nil",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "QNhaI",
+          "name": "Main Content",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 20,
+          "padding": [
+            24,
+            32
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "e9HLB",
+              "name": "Header",
+              "width": "fill_container",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uJliI",
+                  "name": "Header Left",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "V8uTn",
+                      "name": "headerTitle",
+                      "fill": "$D:--foreground",
+                      "content": "Plan Semanal",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wzGrb",
+                      "name": "headerSub",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Selecciona tus opciones para cada comida del día",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SHTfl",
+                  "name": "headerSpacer",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "BuzxY",
+                  "name": "Today Label",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "x0cj4",
+                      "name": "dayLabel",
+                      "fill": "$D:--foreground",
+                      "content": "Viernes",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "M5wy2",
+                      "name": "HOY Badge",
+                      "fill": "#F97316",
+                      "cornerRadius": 12,
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "AAQid",
+                          "name": "hoyText",
+                          "fill": "#FFFFFF",
+                          "content": "HOY",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "xB1jk",
+              "name": "Day Selector",
+              "width": "fill_container",
+              "gap": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "YQ3Hh",
+                  "name": "dayLun",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$D:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "FbVYU",
+                      "name": "dayLunT",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Lun",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "vfhAR",
+                      "name": "dayLunD",
+                      "fill": "$D:--border",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "zubBX",
+                  "name": "dayMar",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$D:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Kn7Gl",
+                      "name": "dayMarT",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Mar",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "HpNuN",
+                      "name": "dayMarD",
+                      "fill": "$D:--border",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "sKISK",
+                  "name": "dayMie",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$D:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "5hLU5",
+                      "name": "dayMieT",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Mié",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "l10BZ",
+                      "name": "dayMieD",
+                      "fill": "$D:--border",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "vVabH",
+                  "name": "dayJue",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$D:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "LSjfo",
+                      "name": "dayJueT",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Jue",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "xIcEo",
+                      "name": "dayJueD",
+                      "fill": "$D:--border",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "jHYRH",
+                  "name": "dayVie",
+                  "fill": "#F97316",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#F97316"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "sBxiX",
+                      "name": "dayVieT",
+                      "fill": "#FFFFFF",
+                      "content": "Vie",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "Z76S0",
+                      "name": "dayVieD",
+                      "fill": "#FFFFFF",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kE0PB",
+                  "name": "daySab",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$D:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "RhQDW",
+                      "name": "daySabT",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Sáb",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "TBIu1",
+                      "name": "daySabD",
+                      "fill": "$D:--border",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "h0MyJ",
+                  "name": "dayDom",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$D:--border"
+                  },
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    8,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jqM1Z",
+                      "name": "dayDomT",
+                      "fill": "$D:--muted-foreground",
+                      "content": "Dom",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "ellipse",
+                      "id": "Vq8RX",
+                      "name": "dayDomD",
+                      "fill": "$D:--border",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vP8Ni",
+              "name": "Day Header",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$D:--border"
+              },
+              "padding": [
+                12,
+                16
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "z2K9F",
+                  "name": "dhLeft",
+                  "gap": 10,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "ZzDd4",
+                      "name": "dhIcon",
+                      "fill": "#F97316",
+                      "width": 10,
+                      "height": 10
+                    },
+                    {
+                      "type": "text",
+                      "id": "Y1ZDd",
+                      "name": "dhTitle",
+                      "fill": "$D:--foreground",
+                      "content": "Viernes",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "eBNRs",
+                      "name": "dhBadge",
+                      "fill": "#F97316",
+                      "cornerRadius": 10,
+                      "padding": [
+                        3,
+                        8
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "85GOV",
+                          "name": "dhBadgeT",
+                          "fill": "#FFFFFF",
+                          "content": "HOY",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QoQyy",
+                  "name": "dhSpacer",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "Z2LUI",
+                  "name": "dhRight",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "id": "a1xwf",
+                      "type": "ref",
+                      "ref": "D:c8fiq",
+                      "name": "dhSwitch",
+                      "width": "fit_content",
+                      "x": 0,
+                      "y": 0,
+                      "height": "fit_content",
+                      "descendants": {
+                        "D:AgS9m": {
+                          "fill": "#F97316",
+                          "width": 36,
+                          "height": 20
+                        },
+                        "D:Fin40": {
+                          "width": 16,
+                          "height": 16,
+                          "x": 18
+                        },
+                        "D:HsFun": {
+                          "content": "Entreno",
+                          "fontSize": 13,
+                          "fontWeight": "600",
+                          "x": 48,
+                          "y": 0.5
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "yfqwH",
+              "name": "Meals Grid",
+              "clip": true,
+              "width": "fill_container",
+              "height": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "PAJTo",
+                  "name": "Column Left",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "o8w6l",
+                      "name": "Desayuno Card",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$D:--border"
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "XvQta",
+                          "name": "c1Header",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "Ar1DA",
+                              "name": "c1Dot",
+                              "fill": "#F97316",
+                              "width": 10,
+                              "height": 10
+                            },
+                            {
+                              "type": "text",
+                              "id": "IkApA",
+                              "name": "c1Title",
+                              "fill": "$D:--foreground",
+                              "content": "Desayuno",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "Xj0bC",
+                          "name": "c1Sub",
+                          "fill": "$D:--muted-foreground",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "Suplementos",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "fg8XJ",
+                          "name": "Pills",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "GTcMx",
+                              "name": "pill1",
+                              "fill": "#F0FDF4",
+                              "cornerRadius": 16,
+                              "padding": [
+                                4,
+                                10
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "HsuMX",
+                                  "name": "pill1t",
+                                  "fill": "#65a30d",
+                                  "content": "1 cáps. Multivitamínico",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "KxqQt",
+                              "name": "pill2",
+                              "fill": "#F0FDF4",
+                              "cornerRadius": 16,
+                              "padding": [
+                                4,
+                                10
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "odW41",
+                                  "name": "pill2t",
+                                  "fill": "#65a30d",
+                                  "content": "1 cáps. Omega 3",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "B19pd",
+                          "name": "Pills Row 2",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "O3lc5",
+                              "name": "pill3",
+                              "fill": "#F0FDF4",
+                              "cornerRadius": 16,
+                              "padding": [
+                                4,
+                                10
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Qt3g2",
+                                  "name": "pill3t",
+                                  "fill": "#65a30d",
+                                  "content": "1 cáps. Vitamina D3",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "K2lLA",
+                              "name": "pill4",
+                              "fill": "#FFF7ED",
+                              "cornerRadius": 16,
+                              "padding": [
+                                4,
+                                10
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "rbHBw",
+                                  "name": "pill4t",
+                                  "fill": "#F97316",
+                                  "content": "2 cáps. Quema Grasas",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "jOEi6",
+                          "name": "c1Divider",
+                          "fill": "$D:--border",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cWtk0",
+                          "name": "c1Note",
+                          "width": "fill_container",
+                          "gap": 6,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "UEYnb",
+                              "name": "c1NoteIcon",
+                              "width": 14,
+                              "height": 14,
+                              "iconFontName": "coffee",
+                              "iconFontFamily": "lucide",
+                              "fill": "$D:--muted-foreground"
+                            },
+                            {
+                              "type": "text",
+                              "id": "7FxPX",
+                              "name": "c1NoteText",
+                              "fill": "$D:--muted-foreground",
+                              "content": "Café o infusión (sin azúcar)",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "JIAzd",
+                      "name": "Cereales Card",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$D:--border"
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "NtpXo",
+                          "name": "c2Header",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "LwWZJ",
+                              "name": "c2Dot",
+                              "fill": "#F97316",
+                              "width": 10,
+                              "height": 10
+                            },
+                            {
+                              "type": "text",
+                              "id": "myMzQ",
+                              "name": "c2Title",
+                              "fill": "$D:--foreground",
+                              "content": "Cereales + Proteína",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "op1vz",
+                          "name": "Items",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "RjIS7",
+                              "name": "c2i1",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "rqQDc",
+                                  "name": "c2i1icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "wheat",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#F97316"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "tilYr",
+                                  "name": "c2i1t",
+                                  "fill": "$D:--foreground",
+                                  "content": "Cereales o avena 75g",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ps83u",
+                              "name": "c2i2",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "NjowI",
+                                  "name": "c2i2icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "dumbbell",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#F97316"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "j0FKX",
+                                  "name": "c2i2t",
+                                  "fill": "$D:--foreground",
+                                  "content": "Proteína en polvo 30g",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "V83FI",
+                              "name": "c2i3",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "MWG2U",
+                                  "name": "c2i3icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "plus",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "$D:--muted-foreground"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "P16uX",
+                                  "name": "c2i3t",
+                                  "fill": "$D:--muted-foreground",
+                                  "content": "Leche o bebida vegetal 250ml",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "EpbZi",
+                          "name": "c2Warn",
+                          "width": "fill_container",
+                          "fill": "#FFF7ED",
+                          "cornerRadius": 8,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "Ub4RR",
+                              "name": "c2WarnIcon",
+                              "width": 14,
+                              "height": 14,
+                              "iconFontName": "triangle-alert",
+                              "iconFontFamily": "lucide",
+                              "fill": "#F97316"
+                            },
+                            {
+                              "type": "text",
+                              "id": "HRyX8",
+                              "name": "c2WarnText",
+                              "fill": "#9A3412",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Cereales con menos de 7g de azúcar por 100g",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "0J2ZQ",
+                  "name": "Column Right",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "P0AfI",
+                      "name": "Pan/Tortitas Card",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$D:--border"
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "0Ie7P",
+                          "name": "c3Header",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "di2jg",
+                              "name": "c3Dot",
+                              "fill": "#FFFFFF",
+                              "width": 10,
+                              "height": 10,
+                              "stroke": {
+                                "align": "center",
+                                "thickness": 2,
+                                "fill": "#F97316"
+                              }
+                            },
+                            {
+                              "type": "text",
+                              "id": "whce1",
+                              "name": "c3Title",
+                              "fill": "$D:--foreground",
+                              "content": "Pan/Tortitas + Embutido",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "tPCx0",
+                          "name": "Items",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 6,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "iEdXP",
+                              "name": "c3i1",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "5Raut",
+                                  "name": "c3i1icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "sandwich",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#F97316"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "ADS7K",
+                                  "name": "c3i1t",
+                                  "fill": "$D:--foreground",
+                                  "content": "Pan 75g",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "ps670",
+                              "name": "c3i2",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "970cC",
+                                  "name": "c3i2icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "circle-dot",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#F97316"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "VbAxG",
+                                  "name": "c3i2t",
+                                  "fill": "$D:--foreground",
+                                  "content": "Tortitas de arroz/maíz 4 uds",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "rectangle",
+                          "id": "sreM9",
+                          "name": "c3Divider",
+                          "fill": "$D:--border",
+                          "width": "fill_container",
+                          "height": 1
+                        },
+                        {
+                          "type": "text",
+                          "id": "E9fOl",
+                          "name": "c3ProLabel",
+                          "fill": "$D:--muted-foreground",
+                          "content": "Proteínas (elegir 1)",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "MpV7S",
+                          "name": "Proteins",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "gAKeG",
+                              "name": "c3p1",
+                              "fill": "$D:--foreground",
+                              "content": "• Jamón york o pavo 60g",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "ooBHb",
+                              "name": "c3p2",
+                              "fill": "$D:--foreground",
+                              "content": "• Jamón serrano 30g",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "cW5HK",
+                              "name": "c3p3",
+                              "fill": "$D:--foreground",
+                              "content": "• Tortilla de huevos 2 huevos",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "xKpI5",
+                              "name": "c3p4",
+                              "fill": "$D:--foreground",
+                              "content": "• Lomo embuchado 35g",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "p0ru5",
+                          "name": "c3Warn",
+                          "width": "fill_container",
+                          "fill": "#FFF7ED",
+                          "cornerRadius": 8,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "xXo8M",
+                              "name": "c3WarnIcon",
+                              "width": 14,
+                              "height": 14,
+                              "iconFontName": "triangle-alert",
+                              "iconFontFamily": "lucide",
+                              "fill": "#F97316"
+                            },
+                            {
+                              "type": "text",
+                              "id": "xGrRX",
+                              "name": "c3WarnText",
+                              "fill": "#9A3412",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "Pan con menos de 7g de azúcar por 100g",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "3YTkC",
+                      "name": "Media Mañana Card",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "$D:--border"
+                      },
+                      "layout": "vertical",
+                      "gap": 10,
+                      "padding": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Z7vsQ",
+                          "name": "c4Header",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "Lgk4U",
+                              "name": "c4Dot",
+                              "fill": "#F97316",
+                              "width": 10,
+                              "height": 10
+                            },
+                            {
+                              "type": "text",
+                              "id": "h0YGd",
+                              "name": "c4Title",
+                              "fill": "$D:--foreground",
+                              "content": "Media Mañana",
+                              "fontFamily": "Inter",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "y1tGe",
+                              "name": "c4Spacer",
+                              "width": "fill_container",
+                              "height": 1
+                            },
+                            {
+                              "type": "frame",
+                              "id": "KKpyx",
+                              "name": "c4Time",
+                              "fill": "$D:--muted",
+                              "cornerRadius": 8,
+                              "padding": [
+                                3,
+                                8
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "88X40",
+                                  "name": "c4TimeT",
+                                  "fill": "$D:--muted-foreground",
+                                  "content": "10:00 - 12:00",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BDBye",
+                          "name": "c4SubHeader",
+                          "width": "fill_container",
+                          "fill": "#FFF7ED",
+                          "cornerRadius": 8,
+                          "gap": 6,
+                          "padding": [
+                            8,
+                            12
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon_font",
+                              "id": "Ryyhp",
+                              "name": "c4SubIcon",
+                              "width": 14,
+                              "height": 14,
+                              "iconFontName": "sandwich",
+                              "iconFontFamily": "lucide",
+                              "fill": "#F97316"
+                            },
+                            {
+                              "type": "text",
+                              "id": "v7fQp",
+                              "name": "c4SubTitle",
+                              "fill": "#9A3412",
+                              "content": "Pan/Tortitas + Embutido",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "1TdXN",
+                          "name": "Items",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 6,
+                          "padding": [
+                            0,
+                            8
+                          ],
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "hqv1y",
+                              "name": "c4i1",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "hsSm0",
+                                  "name": "c4i1icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "sandwich",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#F97316"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "f2Kfk",
+                                  "name": "c4i1t",
+                                  "fill": "$D:--foreground",
+                                  "content": "Pan 75g o Tortitas 4 uds",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "2bEgs",
+                              "name": "c4i2",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "cVQPf",
+                                  "name": "c4i2icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "beef",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "#F97316"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "oUM5K",
+                                  "name": "c4i2t",
+                                  "fill": "$D:--foreground",
+                                  "content": "Jamón york o pavo 60g",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "RMAGC",
+                              "name": "c4i3",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "gNv4A",
+                                  "name": "c4i3icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "beef",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "$D:--muted-foreground"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "378eo",
+                                  "name": "c4i3t",
+                                  "fill": "$D:--muted-foreground",
+                                  "content": "Jamón serrano 30g",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "SrwOJ",
+                              "name": "c4i4",
+                              "width": "fill_container",
+                              "gap": 8,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "Q48cr",
+                                  "name": "c4i4icon",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "egg",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "$D:--muted-foreground"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "uVRwp",
+                                  "name": "c4i4t",
+                                  "fill": "$D:--muted-foreground",
+                                  "content": "Tortilla de huevos 2 huevos",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "imports": {
+    "D": "pencil:shadcn.lib.pen"
+  }
+}
