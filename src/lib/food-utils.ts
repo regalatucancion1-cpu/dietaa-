@@ -11,9 +11,11 @@ export function toFoodKey(name: string): string {
   return name
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // quitar acentos
-    .replace(/[½¼¾]/g, "") // quitar fracciones unicode
-    .replace(/[()]/g, "") // quitar paréntesis
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[½¼¾]/g, "")
+    .replace(/[()≥≤]/g, "")
+    .replace(/[%]/g, "")
+    .replace(/[/+]/g, "-")
     .trim()
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
@@ -58,9 +60,9 @@ export function parseQuantity(qty: string): ParsedQuantity | null {
     return { value, unit };
   }
 
-  // Piezas: "4 uds", "2 huevos", "1 huevo", "1 lata", "1 pieza"
+  // Piezas: "4 uds", "2 huevos", "1 huevo", "1 lata", "1 pieza", "1 plátano", "1 manzana"
   const pieceMatch = trimmed.match(
-    /^(\d+(?:[.,]\d+)?)\s*(uds?|huevos?|latas?|piezas?)\b/i
+    /^(\d+(?:[.,]\d+)?)\s*(uds?|huevos?|latas?|piezas?|platanos?|plátanos?|manzanas?)\b/i
   );
   if (pieceMatch) {
     const value = parseFloat(pieceMatch[1].replace(",", "."));

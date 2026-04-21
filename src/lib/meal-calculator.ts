@@ -2,39 +2,31 @@ import { FOOD_REGISTRY } from "@/data/food-registry";
 import { toFoodKey, parseQuantity } from "@/lib/food-utils";
 import type {
   FoodOption,
-  FixedMeal,
-  VariableMeal,
-  DayOfWeek,
+  FoodSection,
+  Meal,
+  MealOption,
   MealSelection,
   MealType,
 } from "@/types/diet";
 import { DIET_PLAN } from "@/data/diet-plan";
-import { isFixedMeal, MEAL_ORDER } from "@/types/diet";
+import { MEAL_ORDER } from "@/types/diet";
 
 export interface MealTotals {
   kcal: number;
   price: number;
 }
 
-/**
- * Calcula kcal y precio de un alimento individual.
- * Devuelve null si no se puede calcular (cantidad "libre", item no encontrado, etc.)
- */
+const ZERO: MealTotals = { kcal: 0, price: 0 };
+
 export function calculateFoodItem(food: FoodOption): MealTotals | null {
   const key = toFoodKey(food.name);
   const entry = FOOD_REGISTRY[key];
   if (!entry) return null;
 
   const parsed = parseQuantity(food.quantity);
-  if (!parsed) {
-    // Items con "libre" o sin cantidad → 0
-    return { kcal: 0, price: 0 };
-  }
+  if (!parsed) return ZERO;
 
-  // Verificar compatibilidad de unidades
-  if (parsed.unit !== entry.unit) {
-    return null;
-  }
+  if (parsed.unit !== entry.unit) return null;
 
   return {
     kcal: Math.round(entry.kcalPerUnit * parsed.value),
@@ -42,9 +34,6 @@ export function calculateFoodItem(food: FoodOption): MealTotals | null {
   };
 }
 
-/**
- * Suma los totales de una lista de alimentos.
- */
 function sumFoodItems(items: FoodOption[]): MealTotals {
   let kcal = 0;
   let price = 0;
@@ -58,85 +47,53 @@ function sumFoodItems(items: FoodOption[]): MealTotals {
   return { kcal, price: Math.round(price * 100) / 100 };
 }
 
-/**
- * Calcula totales para una comida fija (desayuno, media mañana, merienda).
- */
-export function calculateFixedMealTotals(
-  meal: FixedMeal,
+function sectionTotals(section: FoodSection | undefined, pickIndex: number): MealTotals {
+  if (!section || section.items.length === 0) return ZERO;
+  if (section.pick) {
+    const item = section.items[pickIndex] ?? section.items[0];
+    return item ? calculateFoodItem(item) ?? ZERO : ZERO;
+  }
+  return sumFoodItems(section.items);
+}
+
+export function getActiveVariant(meal: Meal, isTraining: boolean) {
+  return isTraining ? meal.training : meal.rest;
+}
+
+export function getActiveOption(
+  meal: Meal,
+  selection: MealSelection,
+  isTraining: boolean
+): MealOption | null {
+  const variant = getActiveVariant(meal, isTraining);
+  if (!variant || variant.options.length === 0) return null;
+  const id = selection.optionId ?? variant.options[0].id;
+  return variant.options.find((o) => o.id === id) ?? variant.options[0];
+}
+
+export function calculateMealTotals(
+  meal: Meal,
   selection: MealSelection,
   isTraining: boolean
 ): MealTotals {
-  const showNonTraining =
-    !isTraining && meal.type === "media_manana" && meal.nonTrainingOverride;
-  const activeOptions = showNonTraining
-    ? [meal.nonTrainingOverride!]
-    : meal.options;
+  const option = getActiveOption(meal, selection, isTraining);
+  if (!option) return ZERO;
 
-  const selectedId = selection.optionId || activeOptions[0]?.id;
-  const option = activeOptions.find((o) => o.id === selectedId) || activeOptions[0];
-  if (!option) return { kcal: 0, price: 0 };
-
-  // Sumar carbohidratos (primera opción - en fijas son todos a la vez)
-  const carbTotals = sumFoodItems(option.carbs);
-
-  // Sumar proteína seleccionada
-  const proteinSubIndex = selection.proteinSubIndex ?? 0;
-  const proteinOption = option.protein.options[proteinSubIndex] || option.protein.options[0];
-  const proteinTotals = proteinOption
-    ? calculateFoodItem(proteinOption) || { kcal: 0, price: 0 }
-    : { kcal: 0, price: 0 };
-
-  // Sumar extras
-  const extrasTotals = option.extras ? sumFoodItems(option.extras) : { kcal: 0, price: 0 };
+  const carbT = sectionTotals(option.carbs, selection.carbIndex ?? 0);
+  const protT = sectionTotals(option.protein, selection.proteinIndex ?? 0);
+  const fatT = sectionTotals(option.fats, selection.fatIndex ?? 0);
+  const extraT = option.extras ? sumFoodItems(option.extras) : ZERO;
 
   return {
-    kcal: carbTotals.kcal + proteinTotals.kcal + extrasTotals.kcal,
-    price: Math.round((carbTotals.price + proteinTotals.price + extrasTotals.price) * 100) / 100,
+    kcal: carbT.kcal + protT.kcal + fatT.kcal + extraT.kcal,
+    price:
+      Math.round(
+        (carbT.price + protT.price + fatT.price + extraT.price) * 100
+      ) / 100,
   };
 }
 
-/**
- * Calcula totales para una comida variable (comida, cena).
- */
-export function calculateVariableMealTotals(
-  meal: VariableMeal,
-  day: DayOfWeek,
-  selection: MealSelection
-): MealTotals {
-  const dayData = meal.days.find((d) => d.day === day);
-  if (!dayData) return { kcal: 0, price: 0 };
-
-  const carbIndex = selection.carbIndex ?? 0;
-  const proteinIndex = selection.proteinIndex ?? 0;
-
-  // Carbohidrato seleccionado
-  const selectedCarb = dayData.carbOptions[carbIndex] || dayData.carbOptions[0];
-  const carbTotals = selectedCarb
-    ? calculateFoodItem(selectedCarb) || { kcal: 0, price: 0 }
-    : { kcal: 0, price: 0 };
-
-  // Proteína seleccionada (específica dentro del grupo)
-  const proteinSubIndex = selection.proteinSubIndex ?? 0;
-  const proteinGroup = dayData.proteinOptions[proteinIndex] || dayData.proteinOptions[0];
-  const proteinOption = proteinGroup?.options[proteinSubIndex] || proteinGroup?.options[0];
-  const proteinTotals = proteinOption
-    ? calculateFoodItem(proteinOption) || { kcal: 0, price: 0 }
-    : { kcal: 0, price: 0 };
-
-  // Extras
-  const extrasTotals = dayData.extras ? sumFoodItems(dayData.extras) : { kcal: 0, price: 0 };
-
-  return {
-    kcal: carbTotals.kcal + proteinTotals.kcal + extrasTotals.kcal,
-    price: Math.round((carbTotals.price + proteinTotals.price + extrasTotals.price) * 100) / 100,
-  };
-}
-
-/**
- * Calcula totales del día completo (5 comidas).
- */
 export function calculateDayTotals(
-  day: DayOfWeek,
   selections: Record<MealType, MealSelection>,
   isTraining: boolean
 ): MealTotals {
@@ -144,28 +101,15 @@ export function calculateDayTotals(
   let totalPrice = 0;
 
   for (const mealType of MEAL_ORDER) {
-    const selection = selections[mealType] || {};
-    let meal;
-
-    if (mealType in DIET_PLAN.fixed) {
-      meal = DIET_PLAN.fixed[mealType as keyof typeof DIET_PLAN.fixed];
-    } else {
-      meal = DIET_PLAN.variable[mealType as keyof typeof DIET_PLAN.variable];
-    }
-
-    let totals: MealTotals;
-    if (isFixedMeal(meal)) {
-      totals = calculateFixedMealTotals(meal, selection, isTraining);
-    } else {
-      totals = calculateVariableMealTotals(meal, day, selection);
-    }
-
+    const meal = DIET_PLAN[mealType];
+    if (!meal) continue;
+    const variant = getActiveVariant(meal, isTraining);
+    if (!variant) continue;
+    const selection = selections[mealType] ?? {};
+    const totals = calculateMealTotals(meal, selection, isTraining);
     totalKcal += totals.kcal;
     totalPrice += totals.price;
   }
 
-  return {
-    kcal: totalKcal,
-    price: Math.round(totalPrice * 100) / 100,
-  };
+  return { kcal: totalKcal, price: Math.round(totalPrice * 100) / 100 };
 }

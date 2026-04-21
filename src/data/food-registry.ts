@@ -5,286 +5,242 @@ import type { FoodRegistry } from "@/types/nutrition";
  *
  * - kcalPerUnit: kcal por gramo (g), mililitro (ml) o pieza (piece)
  * - pricePerUnit: € por gramo (g), mililitro (ml) o pieza (piece)
- *
- * Precios obtenidos de tienda.mercadona.es (abril 2026).
- * Valores nutricionales por 100g/100ml según información del envase.
  */
 export const FOOD_REGISTRY: FoodRegistry = {
   // ──────────────────────────────────────────────
   // CARBOHIDRATOS (por gramo)
   // ──────────────────────────────────────────────
 
-  "cereales-o-avena": {
-    name: "Cereales o avena",
-    kcalPerUnit: 3.6, // ~360 kcal/100g (copos avena / cereales 0% azúcar)
+  avena: {
+    name: "Avena",
+    kcalPerUnit: 3.6,
     unit: "g",
-    pricePerUnit: 0.002, // ~2.00 €/kg (copos avena Brüggen 1.69€/kg – Corn Flakes 3.00€/kg)
+    pricePerUnit: 0.002,
   },
 
-  "pan": {
-    name: "Pan",
-    kcalPerUnit: 2.5, // ~250 kcal/100g
+  "pan-integral-centeno-espelta": {
+    name: "Pan integral / centeno / espelta",
+    kcalPerUnit: 2.5,
     unit: "g",
-    pricePerUnit: 0.00183, // Barra de pan tradicional 1.83 €/kg
+    pricePerUnit: 0.004,
   },
 
-  "arroz": {
-    name: "Arroz",
-    kcalPerUnit: 3.5, // ~350 kcal/100g (crudo)
+  "arroz-basmati-integral-o-pasta-integral": {
+    name: "Arroz basmati / integral o pasta integral",
+    kcalPerUnit: 3.5,
     unit: "g",
-    pricePerUnit: 0.0013, // Arroz redondo Hacendado 1.30 €/kg
+    pricePerUnit: 0.002,
   },
 
-  "pasta": {
-    name: "Pasta",
-    kcalPerUnit: 3.5, // ~350 kcal/100g (cruda)
+  quinoa: {
+    name: "Quinoa",
+    kcalPerUnit: 3.7,
     unit: "g",
-    pricePerUnit: 0.0016, // Spaghetti Hacendado 1.60 €/kg
-  },
-
-  "legumbres": {
-    name: "Legumbres",
-    kcalPerUnit: 3.0, // ~300 kcal/100g (crudas)
-    unit: "g",
-    pricePerUnit: 0.002, // Lentejas/garbanzos Hacendado ~2.00 €/kg
-  },
-
-  "gnocchis": {
-    name: "Gnocchis",
-    kcalPerUnit: 1.3, // ~130 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.002, // Gnocchi frescos Hacendado 2.00 €/kg
+    pricePerUnit: 0.006,
   },
 
   "patata-o-boniato": {
     name: "Patata o boniato",
-    kcalPerUnit: 0.85, // ~85 kcal/100g
+    kcalPerUnit: 0.85,
     unit: "g",
-    pricePerUnit: 0.0015, // ~1.50 €/kg
+    pricePerUnit: 0.0015,
+  },
+
+  "garbanzos-lentejas-alubias": {
+    name: "Garbanzos / Lentejas / Alubias",
+    kcalPerUnit: 1.2,
+    unit: "g",
+    pricePerUnit: 0.003,
+  },
+
+  noquis: {
+    name: "Ñoquis",
+    kcalPerUnit: 1.3,
+    unit: "g",
+    pricePerUnit: 0.002,
   },
 
   // ──────────────────────────────────────────────
   // CARBOHIDRATOS (por pieza)
   // ──────────────────────────────────────────────
 
-  "tortitas-de-arroz/maiz": {
-    name: "Tortitas de arroz/maíz",
-    kcalPerUnit: 30, // ~30 kcal/tortita (~10g, 350 kcal/100g)
+  "wrap-integral": {
+    name: "Wrap integral",
+    kcalPerUnit: 170,
     unit: "piece",
-    pricePerUnit: 0.09, // Tortitas Hacendado 1.10€/12 uds ≈ 0.09 €/ud
-  },
-
-  "wraps-tipo-burrito": {
-    name: "Wraps tipo burrito",
-    kcalPerUnit: 186, // ~60g/wrap, ~310 kcal/100g
-    unit: "piece",
-    pricePerUnit: 0.19, // Tortillas trigo Hacendado 1.15€/6 uds ≈ 0.19 €/ud
+    pricePerUnit: 0.25,
   },
 
   "pieza-de-fruta": {
     name: "Pieza de fruta",
-    kcalPerUnit: 80, // ~80 kcal pieza mediana
+    kcalPerUnit: 80,
     unit: "piece",
-    pricePerUnit: 0.35, // ~0.35 €/pieza media
+    pricePerUnit: 0.35,
+  },
+
+  platano: {
+    name: "Plátano",
+    kcalPerUnit: 105,
+    unit: "piece",
+    pricePerUnit: 0.3,
+  },
+
+  manzana: {
+    name: "Manzana",
+    kcalPerUnit: 80,
+    unit: "piece",
+    pricePerUnit: 0.35,
+  },
+
+  "frutos-rojos-o-arandanos": {
+    name: "Frutos rojos o arándanos",
+    kcalPerUnit: 0.5,
+    unit: "g",
+    pricePerUnit: 0.012,
+  },
+
+  "frutos-rojos": {
+    name: "Frutos rojos",
+    kcalPerUnit: 0.5,
+    unit: "g",
+    pricePerUnit: 0.012,
   },
 
   // ──────────────────────────────────────────────
-  // PROTEÍNAS – AVES (por gramo)
+  // PROTEÍNAS (por gramo)
   // ──────────────────────────────────────────────
 
-  "pechuga-de-pollo": {
-    name: "Pechuga de pollo",
-    kcalPerUnit: 1.1, // ~110 kcal/100g
+  "pollo-o-pavo": {
+    name: "Pollo o pavo",
+    kcalPerUnit: 1.1,
     unit: "g",
-    pricePerUnit: 0.0073, // Filetes pechuga pollo 7.30 €/kg
+    pricePerUnit: 0.008,
   },
 
-  "hamburguesa-de-pollo": {
-    name: "Hamburguesa de pollo",
-    kcalPerUnit: 1.5, // ~150 kcal/100g (procesada)
+  "pechuga-de-pollo-o-pavo": {
+    name: "Pechuga de pollo o pavo",
+    kcalPerUnit: 1.1,
     unit: "g",
-    pricePerUnit: 0.00732, // Burger de pollo 7.32 €/kg
+    pricePerUnit: 0.008,
   },
 
-  "solomillo-de-pollo": {
-    name: "Solomillo de pollo",
-    kcalPerUnit: 1.1, // ~110 kcal/100g
+  "ternera-magra-o-lomo-de-cerdo": {
+    name: "Ternera magra o lomo de cerdo",
+    kcalPerUnit: 1.4,
     unit: "g",
-    pricePerUnit: 0.008, // Solomillos de pollo 8.00 €/kg
+    pricePerUnit: 0.012,
   },
 
-  "carne-picada-de-pollo": {
-    name: "Carne picada de pollo",
-    kcalPerUnit: 1.2, // ~120 kcal/100g
+  "tofu-firme": {
+    name: "Tofu firme",
+    kcalPerUnit: 1.4,
     unit: "g",
-    pricePerUnit: 0.0073, // ~7.30 €/kg (similar a pechuga)
+    pricePerUnit: 0.009,
   },
 
-  "pechuga-de-pavo": {
-    name: "Pechuga de pavo",
-    kcalPerUnit: 1.05, // ~105 kcal/100g
+  "pescado-azul": {
+    name: "Pescado azul",
+    kcalPerUnit: 2.0,
     unit: "g",
-    pricePerUnit: 0.00875, // Filetes pechuga pavo 8.75 €/kg
+    pricePerUnit: 0.015,
   },
 
-  // ──────────────────────────────────────────────
-  // PROTEÍNAS – CERDO (por gramo)
-  // ──────────────────────────────────────────────
-
-  "lomo": {
-    name: "Lomo",
-    kcalPerUnit: 1.4, // ~140 kcal/100g (lomo de cerdo fresco)
+  "pescado-blanco": {
+    name: "Pescado blanco",
+    kcalPerUnit: 0.85,
     unit: "g",
-    pricePerUnit: 0.008, // ~8.00 €/kg
+    pricePerUnit: 0.012,
   },
 
-  "pincho-amarillo-con-perejil": {
-    name: "Pincho amarillo con perejil",
-    kcalPerUnit: 1.4, // ~140 kcal/100g
+  "fiambre-de-pavo-o-pollo": {
+    name: "Fiambre de pavo o pollo",
+    kcalPerUnit: 1.05,
     unit: "g",
-    pricePerUnit: 0.008, // ~8.00 €/kg
-  },
-
-  "pincho-amarillo": {
-    name: "Pincho amarillo",
-    kcalPerUnit: 1.4, // ~140 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.008, // ~8.00 €/kg
-  },
-
-  // ──────────────────────────────────────────────
-  // PROTEÍNAS – VACUNO (por gramo)
-  // ──────────────────────────────────────────────
-
-  "filete-de-ternera": {
-    name: "Filete de ternera",
-    kcalPerUnit: 1.3, // ~130 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.019, // Filetes vacuno añojo plancha 19.00 €/kg
-  },
-
-  "bistec-de-ternera": {
-    name: "Bistec de ternera",
-    kcalPerUnit: 1.3, // ~130 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.0185, // Escalopín vacuno añojo 18.50 €/kg
-  },
-
-  "hamburguesa-de-ternera": {
-    name: "Hamburguesa de ternera",
-    kcalPerUnit: 2.2, // ~220 kcal/100g (procesada)
-    unit: "g",
-    pricePerUnit: 0.01148, // Burger vacuno 11.48 €/kg
-  },
-
-  "carne-picada-de-ternera": {
-    name: "Carne picada de ternera",
-    kcalPerUnit: 1.7, // ~170 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.011, // Carne picada vacuno 11.00 €/kg
-  },
-
-  // ──────────────────────────────────────────────
-  // PROTEÍNAS – EMBUTIDO (por gramo)
-  // ──────────────────────────────────────────────
-
-  "jamon-york-o-pavo": {
-    name: "Jamón york o pavo",
-    kcalPerUnit: 1.05, // ~105 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.00988, // Pechuga pavo Hacendado finas lonchas 9.88 €/kg
+    pricePerUnit: 0.01,
   },
 
   "jamon-serrano": {
     name: "Jamón serrano",
-    kcalPerUnit: 2.4, // ~240 kcal/100g
+    kcalPerUnit: 2.4,
     unit: "g",
-    pricePerUnit: 0.01708, // Jamón serrano Incarlopsa lonchas 17.08 €/kg
-  },
-
-  "lomo-embuchado": {
-    name: "Lomo embuchado",
-    kcalPerUnit: 2.5, // ~250 kcal/100g
-    unit: "g",
-    pricePerUnit: 0.017, // Lomo embuchado Hacendado 17.00 €/kg
-  },
-
-  // ──────────────────────────────────────────────
-  // PROTEÍNAS – HUEVOS (por pieza)
-  // ──────────────────────────────────────────────
-
-  "tortilla-de-huevos": {
-    name: "Tortilla de huevos",
-    kcalPerUnit: 90, // ~90 kcal/huevo (huevo + aceite)
-    unit: "piece",
-    pricePerUnit: 0.27, // Huevos L 3.20€/12 ≈ 0.27 €/ud
-  },
-
-  "huevos-cocidos": {
-    name: "Huevos cocidos",
-    kcalPerUnit: 75, // ~75 kcal/huevo cocido
-    unit: "piece",
-    pricePerUnit: 0.27,
-  },
-
-  "huevo-a-la-plancha": {
-    name: "Huevo a la plancha",
-    kcalPerUnit: 90, // ~90 kcal (huevo + aceite)
-    unit: "piece",
-    pricePerUnit: 0.27,
-  },
-
-  // ──────────────────────────────────────────────
-  // PROTEÍNAS – OTROS (ml / pieza)
-  // ──────────────────────────────────────────────
-
-  "clara-de-huevo": {
-    name: "Clara de huevo",
-    kcalPerUnit: 0.48, // ~48 kcal/100ml
-    unit: "ml",
-    pricePerUnit: 0.0025, // ~2.50 €/L (clara líquida Mercadona)
-  },
-
-  "atun-al-natural-lata": {
-    name: "Atún al natural (lata)",
-    kcalPerUnit: 52, // ~52 kcal/lata (52g escurrido, ~100 kcal/100g)
-    unit: "piece",
-    pricePerUnit: 0.7, // Atún claro al natural Hacendado 4.20€/6 latas ≈ 0.70 €/lata
+    pricePerUnit: 0.017,
   },
 
   "proteina-en-polvo": {
     name: "Proteína en polvo",
-    kcalPerUnit: 4.0, // ~400 kcal/100g (whey protein)
+    kcalPerUnit: 4.0,
     unit: "g",
-    pricePerUnit: 0.02, // ~20.00 €/kg (precio medio whey)
+    pricePerUnit: 0.02,
+  },
+
+  "yogur-griego-0-o-qfb-0": {
+    name: "Yogur griego 0% o QFB 0%",
+    kcalPerUnit: 0.6,
+    unit: "g",
+    pricePerUnit: 0.004,
+  },
+
+  "claras-1-huevo": {
+    name: "Claras + 1 huevo",
+    kcalPerUnit: 0.55,
+    unit: "g",
+    pricePerUnit: 0.003,
+  },
+
+  "yogur-o-kefir-natural": {
+    name: "Yogur o kéfir natural",
+    kcalPerUnit: 0.6,
+    unit: "g",
+    pricePerUnit: 0.003,
+  },
+
+  // ──────────────────────────────────────────────
+  // GRASAS
+  // ──────────────────────────────────────────────
+
+  aove: {
+    name: "AOVE",
+    kcalPerUnit: 9.0,
+    unit: "g",
+    pricePerUnit: 0.007,
+  },
+
+  aguacate: {
+    name: "Aguacate",
+    kcalPerUnit: 1.6,
+    unit: "g",
+    pricePerUnit: 0.005,
+  },
+
+  guacamole: {
+    name: "Guacamole",
+    kcalPerUnit: 1.5,
+    unit: "g",
+    pricePerUnit: 0.008,
+  },
+
+  "crema-cacahuete-o-frutos-secos": {
+    name: "Crema cacahuete o frutos secos",
+    kcalPerUnit: 6.0,
+    unit: "g",
+    pricePerUnit: 0.012,
+  },
+
+  "crema-de-cacahuete-o-frutos-secos": {
+    name: "Crema de cacahuete o frutos secos",
+    kcalPerUnit: 6.0,
+    unit: "g",
+    pricePerUnit: 0.012,
   },
 
   // ──────────────────────────────────────────────
   // EXTRAS
   // ──────────────────────────────────────────────
 
-  "leche-o-bebida-vegetal": {
-    name: "Leche o bebida vegetal",
-    kcalPerUnit: 0.45, // ~45 kcal/100ml (semi/avena)
-    unit: "ml",
-    pricePerUnit: 0.0009, // ~0.90 €/L (leche semi 0.84 / avena 0.95)
-  },
-
-  // ──────────────────────────────────────────────
-  // ITEMS COMPUESTOS (estimación media por porción)
-  // ──────────────────────────────────────────────
-
-  "1/2-aguacate-o-30g-frutos-secos-o-1-huevo-a-la-plancha": {
-    name: "½ aguacate o 30g frutos secos o 1 huevo a la plancha",
-    kcalPerUnit: 120, // media: aguacate ~120, frutos secos ~180, huevo ~90
-    unit: "piece",
-    pricePerUnit: 0.5, // estimación media
-  },
-
-  "1/2-aguacate-o-30g-frutos-secos": {
-    name: "½ aguacate o 30g frutos secos",
-    kcalPerUnit: 150, // media: aguacate ~120, frutos secos ~180
-    unit: "piece",
-    pricePerUnit: 0.5,
+  "chocolate-85": {
+    name: "Chocolate ≥85%",
+    kcalPerUnit: 6.0,
+    unit: "g",
+    pricePerUnit: 0.024,
   },
 };

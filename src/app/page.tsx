@@ -9,10 +9,10 @@ export default function HomePage() {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-[28px] font-bold text-foreground">
-              Plan Semanal
+              Mi Pauta
             </h1>
             <p className="text-sm text-muted-foreground">
-              Selecciona tus opciones para cada comida del día
+              Recomposición corporal — días de entreno y descanso
             </p>
           </div>
         </div>

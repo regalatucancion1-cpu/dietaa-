@@ -5,17 +5,9 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { DayOfWeek, MealType, MealSelection } from "@/types/diet";
 
-export type Profile = "dani" | "nil";
-
-interface ProfileData {
+interface MealStore {
   trainingDays: Record<DayOfWeek, boolean>;
   selections: Record<DayOfWeek, Record<MealType, MealSelection>>;
-}
-
-interface MealStore {
-  activeProfile: Profile;
-  profiles: Record<Profile, ProfileData>;
-  setProfile: (profile: Profile) => void;
   toggleTrainingDay: (day: DayOfWeek) => void;
   setSelection: (
     day: DayOfWeek,
@@ -38,86 +30,61 @@ const defaultSelection: MealSelection = {
   optionId: undefined,
   carbIndex: 0,
   proteinIndex: 0,
+  fatIndex: 0,
 };
 
 const defaultDaySelections: Record<MealType, MealSelection> = {
-  desayuno: { ...defaultSelection, optionId: "desayuno-a" },
-  media_manana: { ...defaultSelection, optionId: "media-a" },
-  comida: { ...defaultSelection },
-  merienda: { ...defaultSelection, optionId: "merienda-a" },
-  cena: { ...defaultSelection },
+  desayuno: { ...defaultSelection, optionId: "desayuno-dulce" },
+  comida: { ...defaultSelection, optionId: "comida-unica" },
+  pre_entreno: { ...defaultSelection, optionId: "pre-unica" },
+  merienda: { ...defaultSelection, optionId: "merienda-dulce" },
+  cena: { ...defaultSelection, optionId: "cena-unica" },
 };
 
-function createProfileData(): ProfileData {
-  return {
-    trainingDays: Object.fromEntries(
-      days.map((d) => [d, true])
-    ) as Record<DayOfWeek, boolean>,
-    selections: Object.fromEntries(
-      days.map((d) => [
-        d,
-        Object.fromEntries(
-          Object.entries(defaultDaySelections).map(([k, v]) => [k, { ...v }])
-        ),
-      ])
-    ) as Record<DayOfWeek, Record<MealType, MealSelection>>,
-  };
+function initialSelections() {
+  return Object.fromEntries(
+    days.map((d) => [
+      d,
+      Object.fromEntries(
+        Object.entries(defaultDaySelections).map(([k, v]) => [k, { ...v }])
+      ),
+    ])
+  ) as Record<DayOfWeek, Record<MealType, MealSelection>>;
 }
 
 export const useMealStore = create<MealStore>()(
   persist(
     (set) => ({
-      activeProfile: "dani" as Profile,
-      profiles: {
-        dani: createProfileData(),
-        nil: createProfileData(),
-      },
-      setProfile: (profile) => set({ activeProfile: profile }),
+      trainingDays: Object.fromEntries(
+        days.map((d) => [d, d !== "domingo"])
+      ) as Record<DayOfWeek, boolean>,
+      selections: initialSelections(),
       toggleTrainingDay: (day) =>
-        set((state) => {
-          const p = state.activeProfile;
-          return {
-            profiles: {
-              ...state.profiles,
-              [p]: {
-                ...state.profiles[p],
-                trainingDays: {
-                  ...state.profiles[p].trainingDays,
-                  [day]: !state.profiles[p].trainingDays[day],
-                },
-              },
-            },
-          };
-        }),
+        set((state) => ({
+          trainingDays: {
+            ...state.trainingDays,
+            [day]: !state.trainingDays[day],
+          },
+        })),
       setSelection: (day, meal, selection) =>
-        set((state) => {
-          const p = state.activeProfile;
-          return {
-            profiles: {
-              ...state.profiles,
-              [p]: {
-                ...state.profiles[p],
-                selections: {
-                  ...state.profiles[p].selections,
-                  [day]: {
-                    ...state.profiles[p].selections[day],
-                    [meal]: selection,
-                  },
-                },
-              },
+        set((state) => ({
+          selections: {
+            ...state.selections,
+            [day]: {
+              ...state.selections[day],
+              [meal]: selection,
             },
-          };
-        }),
+          },
+        })),
     }),
     {
-      name: "dieta-selections-v2",
+      name: "dieta-christian-v1",
       storage: createJSONStorage(() => localStorage),
       skipHydration: true,
     }
   )
 );
 
-// Hook to hydrate the store on mount (client-only)
 export function useHydrateStore() {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
@@ -127,17 +94,12 @@ export function useHydrateStore() {
   return hydrated;
 }
 
-// Stable selectors
 export function useTrainingDays() {
-  return useMealStore(
-    (s) => s.profiles[s.activeProfile].trainingDays
-  );
+  return useMealStore((s) => s.trainingDays);
 }
 
 export function useSelections() {
-  return useMealStore(
-    (s) => s.profiles[s.activeProfile].selections
-  );
+  return useMealStore((s) => s.selections);
 }
 
 export function useToggleTrainingDay() {

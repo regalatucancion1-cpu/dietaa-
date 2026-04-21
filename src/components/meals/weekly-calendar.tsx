@@ -11,7 +11,7 @@ import {
   useSelections,
 } from "@/hooks/use-meal-selections";
 import { getCurrentDay, getCurrentMeal, getMealTimeLabel } from "@/lib/time-utils";
-import { calculateDayTotals } from "@/lib/meal-calculator";
+import { calculateDayTotals, getActiveVariant } from "@/lib/meal-calculator";
 import { cn } from "@/lib/utils";
 import {
   DAYS,
@@ -19,17 +19,9 @@ import {
   MEAL_ORDER,
   type DayOfWeek,
   type MealType,
-  type Meal,
 } from "@/types/diet";
 
-function getMeal(mealType: MealType): Meal {
-  if (mealType in DIET_PLAN.fixed) {
-    return DIET_PLAN.fixed[mealType as keyof typeof DIET_PLAN.fixed];
-  }
-  return DIET_PLAN.variable[mealType as keyof typeof DIET_PLAN.variable];
-}
-
-const DAY_SHORT_LABELS: Record<DayOfWeek, string> = {
+const DAY_SHORT: Record<DayOfWeek, string> = {
   lunes: "Lun",
   martes: "Mar",
   miercoles: "Mié",
@@ -64,15 +56,11 @@ function DaySelector({
                 : "bg-white border-border text-muted-foreground hover:border-orange-200"
             )}
           >
-            {DAY_SHORT_LABELS[day]}
+            {DAY_SHORT[day]}
             <span
               className={cn(
                 "w-1.5 h-1.5 rounded-full",
-                isSelected
-                  ? "bg-white"
-                  : isToday
-                    ? "bg-orange-500"
-                    : "bg-border"
+                isSelected ? "bg-white" : isToday ? "bg-orange-500" : "bg-border"
               )}
             />
           </button>
@@ -113,10 +101,7 @@ function DayHeader({
         </div>
         <span className="flex-1" />
         <div className="flex items-center gap-3">
-          <Switch
-            checked={isTraining}
-            onCheckedChange={onToggleTraining}
-          />
+          <Switch checked={isTraining} onCheckedChange={onToggleTraining} />
           <span className="text-[13px] font-semibold text-foreground">
             Entreno
           </span>
@@ -143,29 +128,6 @@ function DayHeader({
   );
 }
 
-function MealSection({
-  mealType,
-  day,
-  isToday,
-  currentMeal,
-}: {
-  mealType: MealType;
-  day: DayOfWeek;
-  isToday: boolean;
-  currentMeal: MealType | null;
-}) {
-  const meal = getMeal(mealType);
-  return (
-    <MealCard
-      meal={meal}
-      day={day}
-      isToday={isToday}
-      isCurrent={isToday && currentMeal === mealType}
-      timeLabel={getMealTimeLabel(mealType)}
-    />
-  );
-}
-
 export function WeeklyCalendar() {
   const [today, setToday] = useState<DayOfWeek>("lunes");
   const [selectedDay, setSelectedDay] = useState<DayOfWeek>("lunes");
@@ -179,7 +141,6 @@ export function WeeklyCalendar() {
     setToday(current);
     setSelectedDay(current);
     setCurrentMeal(getCurrentMeal());
-
     const interval = setInterval(() => {
       setToday(getCurrentDay());
       setCurrentMeal(getCurrentMeal());
@@ -188,47 +149,51 @@ export function WeeklyCalendar() {
   }, []);
 
   const isToday = selectedDay === today;
+  const isTraining = trainingDays[selectedDay];
 
   const dayTotals = useMemo(
-    () =>
-      calculateDayTotals(
-        selectedDay,
-        selections[selectedDay],
-        trainingDays[selectedDay]
-      ),
-    [selectedDay, selections, trainingDays]
+    () => calculateDayTotals(selections[selectedDay], isTraining),
+    [selectedDay, selections, isTraining]
   );
+
+  const visibleMeals = MEAL_ORDER.filter((mealType) => {
+    const meal = DIET_PLAN[mealType];
+    return !!getActiveVariant(meal, isTraining);
+  });
 
   return (
     <div className="space-y-5">
-      {/* Day Selector Pills */}
       <DaySelector
         selectedDay={selectedDay}
         today={today}
         onSelect={setSelectedDay}
       />
 
-      {/* Day Header Bar */}
       <DayHeader
         day={selectedDay}
         isToday={isToday}
-        isTraining={trainingDays[selectedDay]}
+        isTraining={isTraining}
         onToggleTraining={() => toggleTrainingDay(selectedDay)}
         dayKcal={dayTotals.kcal}
         dayPrice={dayTotals.price}
       />
 
-      {/* Meals - 2 columns on desktop, 1 on mobile */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {MEAL_ORDER.map((mealType) => (
-          <MealSection
-            key={mealType}
-            mealType={mealType}
-            day={selectedDay}
-            isToday={isToday}
-            currentMeal={currentMeal}
-          />
-        ))}
+        {visibleMeals.map((mealType) => {
+          const meal = DIET_PLAN[mealType];
+          return (
+            <MealCard
+              key={mealType}
+              meal={meal}
+              day={selectedDay}
+              isTraining={isTraining}
+              selection={selections[selectedDay][mealType]}
+              isToday={isToday}
+              isCurrent={isToday && currentMeal === mealType}
+              timeLabel={getMealTimeLabel(mealType)}
+            />
+          );
+        })}
       </div>
     </div>
   );

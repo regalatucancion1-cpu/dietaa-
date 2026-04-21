@@ -7,12 +7,12 @@ import { StoreProvider } from "@/components/store-provider";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Mi Dieta",
-  description: "Plan nutricional semanal",
+  title: "Christian — Pauta",
+  description: "Pauta nutricional y progreso de gym",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Mi Dieta",
+    title: "Christian",
   },
   other: {
     "mobile-web-app-capable": "yes",

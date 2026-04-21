@@ -14,19 +14,17 @@ export function getCurrentDay(): DayOfWeek {
   return JS_DAY_TO_DIET[new Date().getDay()];
 }
 
-// Meal time ranges (hour boundaries)
 const MEAL_TIMES: { type: MealType; start: number; end: number; label: string }[] = [
-  { type: "desayuno", start: 7, end: 9.5, label: "8:00 - 9:30" },
-  { type: "media_manana", start: 9.5, end: 12, label: "10:00 - 12:00" },
+  { type: "desayuno", start: 7, end: 11, label: "8:00 - 10:30" },
   { type: "comida", start: 12, end: 15.5, label: "13:00 - 15:30" },
-  { type: "merienda", start: 15.5, end: 19, label: "17:00 - 19:00" },
+  { type: "pre_entreno", start: 15.5, end: 18, label: "1h 30 antes de entrenar" },
+  { type: "merienda", start: 16, end: 19, label: "17:00 - 19:00" },
   { type: "cena", start: 19, end: 23, label: "21:00 - 23:00" },
 ];
 
 export function getCurrentMeal(): MealType | null {
   const now = new Date();
   const hour = now.getHours() + now.getMinutes() / 60;
-
   for (const meal of MEAL_TIMES) {
     if (hour >= meal.start && hour < meal.end) {
       return meal.type;
@@ -38,13 +36,10 @@ export function getCurrentMeal(): MealType | null {
 export function getNextMeal(): MealType {
   const now = new Date();
   const hour = now.getHours() + now.getMinutes() / 60;
-
   for (const meal of MEAL_TIMES) {
-    if (hour < meal.end) {
-      return meal.type;
-    }
+    if (hour < meal.end) return meal.type;
   }
-  return "desayuno"; // after cena, next is desayuno
+  return "desayuno";
 }
 
 export function getMealTimeLabel(mealType: MealType): string {

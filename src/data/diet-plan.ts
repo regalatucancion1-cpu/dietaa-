@@ -1,571 +1,385 @@
-import type { FixedMeal, VariableMeal } from "@/types/diet";
+import type { Meal, MealOption } from "@/types/diet";
 import { SUPLEMENTOS } from "./supplements";
 
-// ============================================================
-// COMIDAS FIJAS (mismas opciones todos los días)
-// ============================================================
+const VERDURAS_LIBRES = [
+  {
+    name: "Verduras libres",
+    quantity: "libre",
+    quantityCooked:
+      "espinacas, canónigos, vainas, berenjena, calabacín, brócoli, acelgas, champiñones, espárragos verdes, alcachofas, pimientos",
+  },
+];
 
-export const desayuno: FixedMeal = {
-  type: "desayuno",
-  label: "Desayuno",
-  supplements: [
-    SUPLEMENTOS.multivitaminico,
-    SUPLEMENTOS.omega3,
-    SUPLEMENTOS.vitaminaD3,
-    SUPLEMENTOS.quemaGrasas,
+const POSTRE_CENA = [
+  { name: "Yogur o kéfir natural", quantity: "150g" },
+  { name: "Frutos rojos", quantity: "libre" },
+  { name: "Chocolate ≥85%", quantity: "15g" },
+];
+
+const GRASAS_COMIDA = {
+  pick: true,
+  items: [
+    { name: "AOVE", quantity: "15g" },
+    { name: "Aguacate", quantity: "70g" },
+    { name: "Guacamole", quantity: "90g" },
   ],
-  optionalNote: "Café o infusión (¡¡NO le eches azúcar!!)",
-  options: [
+};
+
+const GRASAS_CENA_REST = {
+  pick: true,
+  items: [
+    { name: "AOVE", quantity: "15g" },
+    { name: "Aguacate", quantity: "60g" },
+    { name: "Guacamole", quantity: "80g" },
+  ],
+};
+
+const PROTEINAS_COMIDA = {
+  pick: true,
+  items: [
+    { name: "Pollo o pavo", quantity: "180g" },
+    { name: "Ternera magra o lomo de cerdo", quantity: "160g" },
+    { name: "Tofu firme", quantity: "200g" },
+  ],
+};
+
+const PROTEINAS_CENA = {
+  pick: true,
+  items: [
+    { name: "Pechuga de pollo o pavo", quantity: "150g" },
     {
-      id: "desayuno-a",
-      label: "Cereales + Proteína",
-      carbs: [
-        { name: "Cereales o avena", quantity: "75g" },
-      ],
-      protein: {
-        options: [
-          { name: "Proteína en polvo", quantity: "30g" },
-        ],
-      },
-      extras: [
-        { name: "Leche o bebida vegetal", quantity: "250ml" },
-      ],
-      notes: "Cereales con menos de 7g de azúcar por 100g",
+      name: "Pescado azul",
+      quantity: "180g",
+      quantityCooked: "salmón, atún, sardinas",
     },
     {
-      id: "desayuno-b",
-      label: "Pan/Tortitas + Embutido",
-      carbs: [
-        { name: "Pan", quantity: "75g" },
-        { name: "Tortitas de arroz/maíz", quantity: "4 uds" },
-      ],
-      protein: {
-        options: [
-          { name: "Jamón york o pavo", quantity: "60g" },
-          { name: "Jamón serrano", quantity: "30g" },
-          { name: "Tortilla de huevos", quantity: "2 huevos" },
-          { name: "Lomo embuchado", quantity: "35g" },
-        ],
-      },
-      notes: "Pan con menos de 7g de azúcar por 100g",
+      name: "Pescado blanco",
+      quantity: "200g",
+      quantityCooked: "merluza, bacalao, rape",
     },
   ],
 };
 
-export const mediaManana: FixedMeal = {
-  type: "media_manana",
-  label: "Media Mañana",
-  supplements: [],
-  options: [
-    {
-      id: "media-a",
-      label: "Pan/Tortitas + Embutido",
-      carbs: [
-        { name: "Pan", quantity: "50g" },
-        { name: "Tortitas de arroz/maíz", quantity: "4 uds" },
-      ],
-      protein: {
-        options: [
-          { name: "Jamón york o pavo", quantity: "40g" },
-          { name: "Jamón serrano", quantity: "20g" },
-          { name: "Lomo embuchado", quantity: "35g" },
-          { name: "Atún al natural (lata)", quantity: "1 lata" },
-        ],
+const makeComidaOption = (
+  carbs: Array<{ name: string; quantity: string; quantityCooked?: string }>
+): MealOption => ({
+  id: "comida-unica",
+  label: "Opción única",
+  carbs: { pick: true, items: carbs },
+  protein: PROTEINAS_COMIDA,
+  fats: GRASAS_COMIDA,
+  vegetables: VERDURAS_LIBRES,
+  dessert: [{ name: "Pieza de fruta", quantity: "1 pieza" }],
+  notes: "Si usas tofu, reduce 10g de grasas",
+});
+
+const makeCenaOption = (
+  carbs: Array<{ name: string; quantity: string; quantityCooked?: string }>,
+  fats: { pick: boolean; items: Array<{ name: string; quantity: string }> }
+): MealOption => ({
+  id: "cena-unica",
+  label: "Opción única",
+  carbs: { pick: true, items: carbs },
+  protein: PROTEINAS_CENA,
+  fats,
+  vegetables: VERDURAS_LIBRES,
+  dessert: POSTRE_CENA,
+  notes: "Si usas pescado azul, reduce 5–10g de grasa",
+});
+
+export const desayuno: Meal = {
+  type: "desayuno",
+  label: "Desayuno",
+  supplements: [SUPLEMENTOS.vitaminaD],
+  training: {
+    options: [
+      {
+        id: "desayuno-dulce",
+        label: "A — Dulce",
+        carbs: {
+          items: [
+            { name: "Avena", quantity: "80g" },
+            { name: "Pieza de fruta", quantity: "1 pieza" },
+          ],
+        },
+        protein: {
+          pick: true,
+          items: [
+            { name: "Proteína en polvo", quantity: "35g" },
+            { name: "Yogur griego 0% o QFB 0%", quantity: "300g" },
+            { name: "Claras + 1 huevo", quantity: "300g" },
+          ],
+        },
+        fats: {
+          pick: true,
+          items: [
+            {
+              name: "Ya incluidas en el huevo",
+              quantity: "",
+            },
+            {
+              name: "Crema cacahuete o frutos secos",
+              quantity: "10g",
+              quantityCooked: "solo si usas claras sin huevo",
+            },
+          ],
+        },
       },
-    },
-    {
-      id: "media-b",
-      label: "Cereales + Proteína",
-      carbs: [
-        { name: "Cereales o avena", quantity: "50g" },
-      ],
-      protein: {
-        options: [
-          { name: "Proteína en polvo", quantity: "30g" },
-        ],
+      {
+        id: "desayuno-salado",
+        label: "B — Salado",
+        carbs: {
+          items: [
+            { name: "Pan integral / centeno / espelta", quantity: "80g" },
+            { name: "Pieza de fruta", quantity: "1 pieza" },
+          ],
+        },
+        protein: {
+          pick: true,
+          items: [
+            { name: "Fiambre de pavo o pollo", quantity: "120g" },
+            { name: "Jamón serrano", quantity: "60g" },
+          ],
+        },
+        fats: {
+          pick: true,
+          items: [
+            { name: "AOVE", quantity: "5g" },
+            { name: "Aguacate", quantity: "40g" },
+          ],
+        },
       },
-      extras: [
-        { name: "Leche o bebida vegetal", quantity: "250ml" },
-      ],
-      notes: "Cereales con menos de 7g de azúcar por 100g",
-    },
-  ],
-  nonTrainingOverride: {
-    id: "media-no-entreno",
-    label: "Día sin entrenamiento",
-    carbs: [
-      { name: "Pieza de fruta", quantity: "1 pieza" },
     ],
-    protein: {
-      options: [
-        { name: "Proteína en polvo", quantity: "30g" },
-      ],
-    },
-    extras: [
-      { name: "Leche o bebida vegetal", quantity: "250ml" },
+  },
+  rest: {
+    options: [
+      {
+        id: "desayuno-dulce",
+        label: "A — Dulce",
+        carbs: {
+          items: [
+            { name: "Avena", quantity: "60g" },
+            { name: "Pieza de fruta", quantity: "1 pieza" },
+          ],
+        },
+        protein: {
+          pick: true,
+          items: [
+            { name: "Proteína en polvo", quantity: "35g" },
+            { name: "Yogur griego 0% o QFB 0%", quantity: "250g" },
+            { name: "Claras + 1 huevo", quantity: "250g" },
+          ],
+        },
+        fats: {
+          pick: true,
+          items: [
+            { name: "Ya incluidas en el huevo", quantity: "" },
+            {
+              name: "Crema cacahuete o frutos secos",
+              quantity: "10g",
+              quantityCooked: "solo si usas claras sin huevo",
+            },
+          ],
+        },
+      },
+      {
+        id: "desayuno-salado",
+        label: "B — Salado",
+        carbs: {
+          items: [
+            { name: "Pan integral / centeno / espelta", quantity: "60g" },
+            { name: "Pieza de fruta", quantity: "1 pieza" },
+          ],
+        },
+        protein: {
+          pick: true,
+          items: [
+            { name: "Fiambre de pavo o pollo", quantity: "100g" },
+            { name: "Jamón serrano", quantity: "50g" },
+          ],
+        },
+        fats: {
+          pick: true,
+          items: [
+            { name: "AOVE", quantity: "5g" },
+            { name: "Aguacate", quantity: "40g" },
+          ],
+        },
+      },
     ],
   },
 };
 
-export const merienda: FixedMeal = {
+export const comida: Meal = {
+  type: "comida",
+  label: "Comida",
+  supplements: [],
+  optionalNote: "Postre opcional: 1 fruta si hay hambre",
+  training: {
+    options: [
+      makeComidaOption([
+        { name: "Arroz basmati / integral o pasta integral", quantity: "100g" },
+        { name: "Quinoa", quantity: "100g" },
+        { name: "Patata o boniato", quantity: "350g" },
+        {
+          name: "Garbanzos / Lentejas / Alubias",
+          quantity: "200g",
+          quantityCooked: "ya cocidas",
+        },
+      ]),
+    ],
+  },
+  rest: {
+    options: [
+      makeComidaOption([
+        { name: "Patata o boniato", quantity: "300g" },
+        {
+          name: "Garbanzos / Lentejas / Alubias",
+          quantity: "150g",
+          quantityCooked: "ya cocidas",
+        },
+        { name: "Arroz basmati / integral o pasta integral", quantity: "60g" },
+        { name: "Quinoa", quantity: "60g" },
+        { name: "Wrap integral", quantity: "2 uds" },
+      ]),
+    ],
+  },
+};
+
+export const preEntreno: Meal = {
+  type: "pre_entreno",
+  label: "Pre-entreno",
+  supplements: [SUPLEMENTOS.creatina, SUPLEMENTOS.citrulina],
+  optionalNote: "Tomar 1h 30min antes de entrenar (combo pre-entreno 30min antes)",
+  training: {
+    options: [
+      {
+        id: "pre-unica",
+        label: "Pre-entreno",
+        carbs: {
+          items: [{ name: "Plátano", quantity: "1 pieza" }],
+        },
+        protein: {
+          items: [
+            {
+              name: "Proteína en polvo",
+              quantity: "35g",
+              quantityCooked: "con leche vegetal o desnatada sin lactosa",
+            },
+          ],
+        },
+        fats: {
+          items: [{ name: "Crema de cacahuete o frutos secos", quantity: "15g" }],
+        },
+      },
+    ],
+  },
+};
+
+export const merienda: Meal = {
   type: "merienda",
   label: "Merienda",
   supplements: [],
-  options: [
-    {
-      id: "merienda-a",
-      label: "Cereales + Proteína",
-      carbs: [
-        { name: "Cereales o avena", quantity: "50g" },
-      ],
-      protein: {
-        options: [
-          { name: "Proteína en polvo", quantity: "40g" },
-        ],
+  optionalNote: "Solo en días de descanso (en días de entreno hay pre-entreno)",
+  rest: {
+    options: [
+      {
+        id: "merienda-dulce",
+        label: "A — Dulce",
+        carbs: {
+          pick: true,
+          items: [
+            { name: "Manzana", quantity: "1 pieza" },
+            { name: "Frutos rojos o arándanos", quantity: "80g" },
+          ],
+        },
+        protein: {
+          items: [{ name: "Yogur griego 0% o QFB 0%", quantity: "200g" }],
+        },
+        fats: {
+          items: [
+            { name: "Crema de cacahuete o frutos secos", quantity: "10g" },
+          ],
+        },
       },
-      extras: [
-        { name: "Leche o bebida vegetal", quantity: "250-300ml" },
-      ],
-    },
-    {
-      id: "merienda-b",
-      label: "Pan/Tortitas + Embutido",
-      carbs: [
-        { name: "Pan", quantity: "50g" },
-        { name: "Tortitas de arroz/maíz", quantity: "4 uds" },
-      ],
-      protein: {
-        options: [
-          { name: "Jamón york o pavo", quantity: "50g" },
-          { name: "Jamón serrano", quantity: "25g" },
-          { name: "Lomo embuchado", quantity: "35g" },
-          { name: "Atún al natural (lata)", quantity: "1 lata" },
-        ],
+      {
+        id: "merienda-salado",
+        label: "B — Salado",
+        carbs: {
+          items: [{ name: "Pan integral / centeno / espelta", quantity: "80g" }],
+        },
+        protein: {
+          pick: true,
+          items: [
+            { name: "Fiambre de pavo o pollo", quantity: "80g" },
+            { name: "Jamón serrano", quantity: "40g" },
+          ],
+        },
       },
-      notes: "Pan con menos de 7g de azúcar por 100g",
-    },
-  ],
+    ],
+  },
 };
 
-// ============================================================
-// COMIDA (varía por día)
-// ============================================================
-
-export const comida: VariableMeal = {
-  type: "comida",
-  label: "Comida",
-  supplements: [SUPLEMENTOS.omega3, SUPLEMENTOS.vitaminaC],
-  days: [
-    {
-      day: "lunes",
-      carbOptions: [
-        { name: "Arroz", quantity: "50g", quantityCooked: "150g cocido" },
-        { name: "Legumbres", quantity: "60g", quantityCooked: "180g cocidas/de bote" },
-        { name: "Pan", quantity: "70g" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "175g" },
-            { name: "Hamburguesa de pollo", quantity: "175g" },
-            { name: "Solomillo de pollo", quantity: "175g" },
-            { name: "Carne picada de pollo", quantity: "175g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Tortilla de huevos", quantity: "2 huevos" },
-            { name: "Huevos cocidos", quantity: "2 huevos" },
-            { name: "Clara de huevo", quantity: "200ml" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "martes",
-      carbOptions: [
-        { name: "Puré de verdura", quantity: "libre" },
-        { name: "Ensalada mixta", quantity: "libre" },
-        { name: "Gazpacho", quantity: "libre" },
-        { name: "Verdura", quantity: "libre" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Tortilla de huevos", quantity: "2 huevos" },
-            { name: "Clara de huevo", quantity: "200ml" },
-          ],
-        },
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-      ],
-      extras: [
-        { name: "½ aguacate o 30g frutos secos o 1 huevo a la plancha", quantity: "" },
-      ],
-      notes: "Máximo 1 cucharada pequeña de aceite en la ensalada",
-    },
-    {
-      day: "miercoles",
-      carbOptions: [
-        { name: "Gnocchis", quantity: "150g" },
-        { name: "Pan", quantity: "60g" },
-        { name: "Arroz", quantity: "50g", quantityCooked: "150g cocido" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pavo", quantity: "160g" },
-            { name: "Lomo", quantity: "160g" },
-            { name: "Pincho amarillo con perejil", quantity: "160g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "150g" },
-            { name: "Hamburguesa de pollo", quantity: "150g" },
-            { name: "Solomillo de pollo", quantity: "150g" },
-            { name: "Carne picada de pollo", quantity: "150g" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "jueves",
-      carbOptions: [
-        { name: "Legumbres", quantity: "50g", quantityCooked: "180g cocidas/de bote" },
-        { name: "Patata o boniato", quantity: "150g" },
-        { name: "Pan", quantity: "60g" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Tortilla de huevos", quantity: "2 huevos" },
-            { name: "Clara de huevo", quantity: "200ml" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "viernes",
-      carbOptions: [
-        { name: "Arroz", quantity: "50g", quantityCooked: "150g cocido" },
-        { name: "Patata o boniato", quantity: "200g" },
-        { name: "Pasta", quantity: "60g", quantityCooked: "130g cocida" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "160g" },
-            { name: "Hamburguesa de pollo", quantity: "160g" },
-            { name: "Solomillo de pollo", quantity: "160g" },
-            { name: "Carne picada de pollo", quantity: "160g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Tortilla de huevos", quantity: "2 huevos" },
-            { name: "Clara de huevo", quantity: "200ml" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "sabado",
-      carbOptions: [
-        { name: "Pasta", quantity: "60g", quantityCooked: "130g cocida" },
-        { name: "Arroz", quantity: "60g", quantityCooked: "150g cocido" },
-        { name: "Legumbres", quantity: "50g", quantityCooked: "180g de bote" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pavo", quantity: "175g" },
-            { name: "Lomo", quantity: "175g" },
-            { name: "Pincho amarillo con perejil", quantity: "175g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "domingo",
-      carbOptions: [
-        { name: "Gnocchis", quantity: "150g" },
-        { name: "Patata o boniato", quantity: "200g" },
-        { name: "Arroz", quantity: "50g", quantityCooked: "150g cocido" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "160g" },
-            { name: "Hamburguesa de pollo", quantity: "160g" },
-            { name: "Solomillo de pollo", quantity: "160g" },
-            { name: "Carne picada de pollo", quantity: "160g" },
-          ],
-        },
-      ],
-      extras: [
-        { name: "Huevo a la plancha", quantity: "1 huevo" },
-      ],
-      notes: "Controla el aceite",
-    },
-  ],
-};
-
-// ============================================================
-// CENA (varía por día)
-// ============================================================
-
-export const cena: VariableMeal = {
+export const cena: Meal = {
   type: "cena",
   label: "Cena",
-  supplements: [],
-  days: [
-    {
-      day: "lunes",
-      carbOptions: [
-        { name: "Pasta", quantity: "60g", quantityCooked: "150g cocida" },
-        { name: "Wraps tipo burrito", quantity: "2 uds" },
-        { name: "Pan", quantity: "60g" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Pechuga de pavo", quantity: "160g" },
-            { name: "Lomo", quantity: "160g" },
-            { name: "Pincho amarillo con perejil", quantity: "160g" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "martes",
-      carbOptions: [
-        { name: "Arroz", quantity: "60g", quantityCooked: "180g cocido" },
-        { name: "Pasta", quantity: "60g", quantityCooked: "160g cocida" },
-        { name: "Pan", quantity: "70g" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pavo", quantity: "150g" },
-            { name: "Lomo", quantity: "150g" },
-            { name: "Pincho amarillo con perejil", quantity: "150g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "185g" },
-            { name: "Hamburguesa de pollo", quantity: "185g" },
-            { name: "Solomillo de pollo", quantity: "185g" },
-            { name: "Carne picada de pollo", quantity: "185g" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "miercoles",
-      carbOptions: [
-        { name: "Patata o boniato", quantity: "200g" },
-        { name: "Pan", quantity: "60g" },
-        { name: "Pasta", quantity: "60g", quantityCooked: "130g cocida" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pavo", quantity: "150g" },
-            { name: "Lomo", quantity: "150g" },
-            { name: "Pincho amarillo", quantity: "150g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "jueves",
-      carbOptions: [
-        { name: "Ensalada mixta", quantity: "libre" },
-        { name: "Gazpacho", quantity: "libre" },
-        { name: "Verdura", quantity: "libre" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Tortilla de huevos", quantity: "3 huevos" },
-            { name: "Clara de huevo", quantity: "300ml" },
-          ],
-        },
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "150g" },
-            { name: "Bistec de ternera", quantity: "150g" },
-            { name: "Hamburguesa de ternera", quantity: "150g" },
-            { name: "Carne picada de ternera", quantity: "150g" },
-          ],
-        },
-      ],
-      extras: [
-        { name: "½ aguacate o 30g frutos secos", quantity: "" },
-      ],
-    },
-    {
-      day: "viernes",
-      carbOptions: [
-        { name: "Wraps tipo burrito", quantity: "2 uds" },
-        { name: "Gnocchis", quantity: "150g" },
-        { name: "Pan", quantity: "60g" },
-        { name: "Arroz", quantity: "50g", quantityCooked: "150g cocido" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "160g" },
-            { name: "Bistec de ternera", quantity: "160g" },
-            { name: "Hamburguesa de ternera", quantity: "160g" },
-            { name: "Carne picada de ternera", quantity: "160g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "150g" },
-            { name: "Hamburguesa de pollo", quantity: "150g" },
-            { name: "Solomillo de pollo", quantity: "150g" },
-            { name: "Carne picada de pollo", quantity: "150g" },
-          ],
-        },
-      ],
-    },
-    {
-      day: "sabado",
-      carbOptions: [
-        { name: "Ensalada mixta", quantity: "libre" },
-        { name: "Gazpacho", quantity: "libre" },
-        { name: "Verdura", quantity: "libre" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pollo", quantity: "200g" },
-            { name: "Hamburguesa de pollo", quantity: "200g" },
-            { name: "Solomillo de pollo", quantity: "200g" },
-            { name: "Carne picada de pollo", quantity: "200g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Tortilla de huevos", quantity: "2 huevos" },
-            { name: "Clara de huevo", quantity: "250ml" },
-          ],
-        },
-      ],
-      extras: [
-        { name: "½ aguacate o 30g frutos secos", quantity: "" },
-      ],
-    },
-    {
-      day: "domingo",
-      carbOptions: [
-        { name: "Gnocchis", quantity: "150g" },
-        { name: "Pan", quantity: "50g" },
-        { name: "Wraps tipo burrito", quantity: "2 uds" },
-        { name: "Pasta", quantity: "50g", quantityCooked: "130g cocida" },
-      ],
-      proteinOptions: [
-        {
-          options: [
-            { name: "Pechuga de pavo", quantity: "175g" },
-            { name: "Lomo", quantity: "175g" },
-            { name: "Pincho amarillo con perejil", quantity: "175g" },
-          ],
-        },
-        {
-          options: [
-            { name: "Filete de ternera", quantity: "160g" },
-            { name: "Bistec de ternera", quantity: "160g" },
-            { name: "Carne picada de ternera", quantity: "160g" },
-            { name: "Hamburguesa de ternera", quantity: "160g" },
-          ],
-        },
-      ],
-    },
-  ],
+  supplements: [SUPLEMENTOS.omega3, SUPLEMENTOS.sleep],
+  training: {
+    options: [
+      makeCenaOption(
+        [
+          { name: "Patata o boniato", quantity: "250g" },
+          {
+            name: "Garbanzos / Lentejas / Alubias",
+            quantity: "150g",
+            quantityCooked: "ya cocidas",
+          },
+          { name: "Arroz basmati / integral o pasta integral", quantity: "60g" },
+          { name: "Quinoa", quantity: "60g" },
+          { name: "Wrap integral", quantity: "2 uds" },
+        ],
+        GRASAS_COMIDA
+      ),
+    ],
+  },
+  rest: {
+    options: [
+      makeCenaOption(
+        [
+          { name: "Patata o boniato", quantity: "250g" },
+          { name: "Ñoquis", quantity: "200g" },
+          { name: "Arroz basmati / integral o pasta integral", quantity: "60g" },
+          { name: "Quinoa", quantity: "60g" },
+          { name: "Wrap integral", quantity: "2 uds" },
+        ],
+        GRASAS_CENA_REST
+      ),
+    ],
+  },
 };
 
-// ============================================================
-// EXPORT COMPLETO
-// ============================================================
-
-export const DIET_PLAN = {
-  fixed: {
-    desayuno,
-    media_manana: mediaManana,
-    merienda,
-  },
-  variable: {
-    comida,
-    cena,
-  },
+export const DIET_PLAN: Record<Meal["type"], Meal> = {
+  desayuno,
+  comida,
+  pre_entreno: preEntreno,
+  merienda,
+  cena,
 };
 
 export const NUTRITION_RULES = [
-  "Cantidades en crudo (pasta, arroz, legumbres incluyen equivalencia cocida)",
-  "Evitar fritos y rebozados — priorizar plancha, horno, vapor o salteados",
-  "Especias: puedes usarlas sin problema (cúrcuma, curry, pimienta, etc.)",
-  "Verduras: consumo libre y sin límite en todas las comidas",
-  "Fruta: máximo 2-3 piezas al día, siempre entera (no zumos)",
-  "Yogures: menos de 7g de azúcar por 100g",
-  "Cereales: menos de 7g de azúcar por 100g",
-  "Pan de molde: menos de 7g de azúcar por 100g",
-  "Gazpacho: menos de 60 kcal por 100ml",
-  "Tomate: triturado/tamizado sin azúcares añadidos, menos de 7g azúcar por 100g",
+  "Objetivo: recomposición corporal (pérdida de grasa + ganancia muscular)",
+  "1–2 comidas libres a la semana (mejor post-entreno, con buena base de proteína)",
+  "Cantidades en crudo (salvo que indique cocido)",
+  "Priorizar plancha, horno, vapor o salteados. Evitar fritos y rebozados",
+  "Verduras: consumo libre e ilimitado en comida y cena",
+  "Fruta: entera, no zumos",
+  "Pan: integral, centeno o espelta",
+  "Yogures: sin azúcar añadido o 0%",
+  "Tomate triturado/tamizado sin azúcares añadidos",
   "Refrescos: solo 0 azúcares",
-  "Postres permitidos: yogur, gelatina, café, té o fruta",
-  "Aceite en ensalada: máximo 1 cucharada pequeña",
   "Para endulzar: mejor canela o eritritol",
-  "Los días y opciones son orientativos — puedes intercambiarlos según te venga mejor",
-  "Eventos sociales: disfruta, pero prioriza opciones saludables y cuidado con rebozados, postres y alcohol",
+  "Si usas tofu, reduce 10g de grasas",
+  "Si usas pescado azul (salmón, atún), reduce 5–10g de grasa",
 ];
+
+export const LIBRES_POR_SEMANA = 2;

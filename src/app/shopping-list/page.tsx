@@ -3,15 +3,51 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ShoppingCart } from "lucide-react";
-import { useSelections, useTrainingDays, useMealStore } from "@/hooks/use-meal-selections";
+import { useSelections, useTrainingDays } from "@/hooks/use-meal-selections";
 import { DIET_PLAN } from "@/data/diet-plan";
-import { DAYS, type DayOfWeek, type MealType, type MealSelection } from "@/types/diet";
+import {
+  DAYS,
+  MEAL_ORDER,
+  type DayOfWeek,
+  type MealType,
+  type MealSelection,
+  type FoodOption,
+} from "@/types/diet";
+import { getActiveVariant, getActiveOption } from "@/lib/meal-calculator";
 import { useState } from "react";
 
 interface ShoppingItem {
   name: string;
   quantity: string;
   category: string;
+}
+
+function categorize(name: string): string {
+  const l = name.toLowerCase();
+  if (l.includes("pollo") || l.includes("pavo") || l.includes("ternera") || l.includes("cerdo") || l.includes("fiambre") || l.includes("jamón") || l.includes("lomo") || l.includes("tofu") || l.includes("huevo") || l.includes("clara") || l.includes("yogur") || l.includes("qfb") || l.includes("kéfir") || l.includes("pescado") || l.includes("atún") || l.includes("salmón"))
+    return "Proteína";
+  if (l.includes("avena") || l.includes("pan") || l.includes("arroz") || l.includes("quinoa") || l.includes("pasta") || l.includes("patata") || l.includes("boniato") || l.includes("garbanzo") || l.includes("lenteja") || l.includes("alubia") || l.includes("ñoqui") || l.includes("wrap") || l.includes("plátano") || l.includes("manzana") || l.includes("fruta") || l.includes("frutos rojos") || l.includes("arándano"))
+    return "Carbohidratos";
+  if (l.includes("aove") || l.includes("aguacate") || l.includes("guacamole") || l.includes("crema") || l.includes("frutos secos") || l.includes("ya incluidas"))
+    return "Grasas";
+  if (l.includes("verdura")) return "Verduras";
+  if (l.includes("chocolate") || l.includes("postre")) return "Extras";
+  return "Varios";
+}
+
+function collectSection(
+  section: { pick?: boolean; items: FoodOption[] } | undefined,
+  pickIndex: number,
+  out: ShoppingItem[]
+) {
+  if (!section) return;
+  const items = section.pick
+    ? [section.items[pickIndex] ?? section.items[0]]
+    : section.items;
+  for (const item of items) {
+    if (!item || !item.quantity || item.quantity === "libre") continue;
+    out.push({ name: item.name, quantity: item.quantity, category: categorize(item.name) });
+  }
 }
 
 function generateShoppingList(
@@ -21,91 +57,39 @@ function generateShoppingList(
   const items: ShoppingItem[] = [];
 
   for (const day of DAYS) {
-    const daySelections = selections[day];
-
-    // Comidas fijas: desayuno, media_manana, merienda
-    for (const mealType of ["desayuno", "media_manana", "merienda"] as MealType[]) {
-      const meal = DIET_PLAN.fixed[mealType as keyof typeof DIET_PLAN.fixed];
-      if (!meal) continue;
-
-      const sel = daySelections[mealType];
-
-      if (
-        mealType === "media_manana" &&
-        !trainingDays[day] &&
-        meal.nonTrainingOverride
-      ) {
-        const override = meal.nonTrainingOverride;
-        override.carbs.forEach((c) =>
-          items.push({ name: c.name, quantity: c.quantity, category: "Varios" })
-        );
-        override.protein.options.forEach((p) =>
-          items.push({ name: p.name, quantity: p.quantity, category: "Proteína" })
-        );
-        override.extras?.forEach((e) =>
-          items.push({ name: e.name, quantity: e.quantity, category: "Varios" })
-        );
-        continue;
-      }
-
-      const optionId = sel.optionId || meal.options[0]?.id;
-      const option = meal.options.find((o) => o.id === optionId) || meal.options[0];
+    const isTraining = trainingDays[day];
+    for (const mealType of MEAL_ORDER) {
+      const meal = DIET_PLAN[mealType];
+      if (!getActiveVariant(meal, isTraining)) continue;
+      const sel = selections[day][mealType];
+      const option = getActiveOption(meal, sel, isTraining);
       if (!option) continue;
 
-      option.carbs.forEach((c) =>
-        items.push({ name: c.name, quantity: c.quantity, category: "Carbohidratos" })
-      );
-      if (option.protein.options.length > 0) {
-        const pIdx = sel.proteinIndex ?? 0;
-        const protein = option.protein.options[pIdx] || option.protein.options[0];
-        items.push({ name: protein.name, quantity: protein.quantity, category: "Proteína" });
+      collectSection(option.carbs, sel.carbIndex ?? 0, items);
+      collectSection(option.protein, sel.proteinIndex ?? 0, items);
+      collectSection(option.fats, sel.fatIndex ?? 0, items);
+      if (option.extras) {
+        for (const e of option.extras) {
+          if (!e.quantity || e.quantity === "libre") continue;
+          items.push({ name: e.name, quantity: e.quantity, category: categorize(e.name) });
+        }
       }
-      option.extras?.forEach((e) =>
-        items.push({ name: e.name, quantity: e.quantity, category: "Varios" })
-      );
-    }
-
-    // Comidas variables: comida, cena
-    for (const mealType of ["comida", "cena"] as MealType[]) {
-      const meal = DIET_PLAN.variable[mealType as keyof typeof DIET_PLAN.variable];
-      if (!meal) continue;
-
-      const dayData = meal.days.find((d) => d.day === day);
-      if (!dayData) continue;
-
-      const sel = daySelections[mealType];
-      const carbIdx = sel.carbIndex ?? 0;
-      const proteinIdx = sel.proteinIndex ?? 0;
-
-      const carb = dayData.carbOptions[carbIdx] || dayData.carbOptions[0];
-      if (carb) {
-        items.push({ name: carb.name, quantity: carb.quantity, category: "Carbohidratos" });
+      if (option.dessert) {
+        for (const d of option.dessert) {
+          if (!d.quantity || d.quantity === "libre") continue;
+          items.push({ name: d.name, quantity: d.quantity, category: categorize(d.name) });
+        }
       }
-
-      const proteinGroup = dayData.proteinOptions[proteinIdx] || dayData.proteinOptions[0];
-      if (proteinGroup?.options.length > 0) {
-        items.push({
-          name: proteinGroup.options[0].name,
-          quantity: proteinGroup.options[0].quantity,
-          category: "Proteína",
-        });
-      }
-
-      dayData.extras?.forEach((e) =>
-        items.push({ name: e.name, quantity: e.quantity || "1", category: "Extras" })
-      );
     }
   }
 
-  // Agrupar por nombre
   const grouped = new Map<string, { quantity: string; category: string; count: number }>();
   for (const item of items) {
-    const key = item.name;
-    const existing = grouped.get(key);
+    const existing = grouped.get(item.name);
     if (existing) {
       existing.count++;
     } else {
-      grouped.set(key, { quantity: item.quantity, category: item.category, count: 1 });
+      grouped.set(item.name, { quantity: item.quantity, category: item.category, count: 1 });
     }
   }
 
@@ -119,21 +103,16 @@ function generateShoppingList(
 export default function ShoppingListPage() {
   const selections = useSelections();
   const trainingDays = useTrainingDays();
-  const activeProfile = useMealStore((s) => s.activeProfile);
   const [checked, setChecked] = useState<Set<string>>(new Set());
 
   const items = generateShoppingList(selections, trainingDays);
-
   const categories = [...new Set(items.map((i) => i.category))];
 
   const toggleItem = (name: string) => {
     setChecked((prev) => {
       const next = new Set(prev);
-      if (next.has(name)) {
-        next.delete(name);
-      } else {
-        next.add(name);
-      }
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
       return next;
     });
   };
@@ -143,10 +122,10 @@ export default function ShoppingListPage() {
       <header className="border-b px-4 py-3 md:px-6">
         <div className="flex items-center gap-2">
           <ShoppingCart className="h-5 w-5 text-orange-500" />
-          <h1 className="text-xl font-bold">Lista de la Compra — {activeProfile === "dani" ? "Dani" : "Nil"}</h1>
+          <h1 className="text-xl font-bold">Lista de la Compra</h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Generada automáticamente según tus selecciones de comida
+          Generada automáticamente según tus selecciones de la semana
         </p>
       </header>
 
@@ -163,10 +142,7 @@ export default function ShoppingListPage() {
                 {items
                   .filter((i) => i.category === category)
                   .map((item) => (
-                    <li
-                      key={item.name}
-                      className="flex items-center gap-3 text-sm"
-                    >
+                    <li key={item.name} className="flex items-center gap-3 text-sm">
                       <Checkbox
                         checked={checked.has(item.name)}
                         onCheckedChange={() => toggleItem(item.name)}
@@ -192,7 +168,7 @@ export default function ShoppingListPage() {
 
         {items.length === 0 && (
           <div className="text-center text-muted-foreground py-12">
-            No hay items. Selecciona tus comidas en el plan semanal primero.
+            No hay items. Selecciona tus comidas en el plan primero.
           </div>
         )}
 
