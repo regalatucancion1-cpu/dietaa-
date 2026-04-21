@@ -2153,3 +2153,152 @@ export const MEAL_LABELS: Record<MealType, string> = {
   merienda: "Merienda",
   cena: "Cena",
 };
+
+/**
+ * Estimaciones de kcal totales y precio (€) por ración.
+ * Calculadas a partir del food-registry + referencias de verduras,
+ * salsas y extras no listados. Precios estilo Mercadona.
+ */
+export const RECIPE_NUTRITION: Record<string, { kcal: number; price: number }> = {
+  // Desayunos dulces
+  "des-dulce-01": { kcal: 520, price: 0.75 },
+  "des-dulce-02": { kcal: 490, price: 2.3 },
+  "des-dulce-03": { kcal: 500, price: 2.5 },
+  "des-dulce-04": { kcal: 590, price: 1.45 },
+  "des-dulce-05": { kcal: 510, price: 0.9 },
+  "des-dulce-06": { kcal: 490, price: 1.35 },
+  "des-dulce-07": { kcal: 470, price: 2.65 },
+  "des-dulce-08": { kcal: 620, price: 2.1 },
+  "des-dulce-09": { kcal: 530, price: 2.55 },
+  "des-dulce-10": { kcal: 520, price: 0.8 },
+  "des-dulce-11": { kcal: 560, price: 1.85 },
+  "des-dulce-12": { kcal: 490, price: 1.3 },
+  "des-dulce-13": { kcal: 500, price: 1.35 },
+  "des-dulce-14": { kcal: 570, price: 1.85 },
+  "des-dulce-15": { kcal: 550, price: 2.15 },
+
+  // Desayunos salados
+  "des-salado-01": { kcal: 520, price: 1.35 },
+  "des-salado-02": { kcal: 390, price: 1.15 },
+  "des-salado-03": { kcal: 430, price: 1.65 },
+  "des-salado-04": { kcal: 380, price: 1.55 },
+  "des-salado-05": { kcal: 470, price: 1.45 },
+  "des-salado-06": { kcal: 360, price: 1.0 },
+  "des-salado-07": { kcal: 310, price: 1.25 },
+  "des-salado-08": { kcal: 560, price: 1.75 },
+  "des-salado-09": { kcal: 630, price: 1.65 },
+  "des-salado-10": { kcal: 430, price: 1.3 },
+  "des-salado-11": { kcal: 500, price: 1.7 },
+  "des-salado-12": { kcal: 420, price: 1.85 },
+  "des-salado-13": { kcal: 500, price: 1.75 },
+  "des-salado-14": { kcal: 430, price: 1.6 },
+  "des-salado-15": { kcal: 420, price: 1.25 },
+
+  // Comidas
+  "comida-01": { kcal: 630, price: 2.1 },
+  "comida-02": { kcal: 640, price: 3.25 },
+  "comida-03": { kcal: 680, price: 2.8 },
+  "comida-04": { kcal: 570, price: 2.15 },
+  "comida-05": { kcal: 500, price: 2.15 },
+  "comida-06": { kcal: 450, price: 3.1 },
+  "comida-07": { kcal: 410, price: 0.75 },
+  "comida-08": { kcal: 500, price: 2.1 },
+  "comida-09": { kcal: 530, price: 2.65 },
+  "comida-10": { kcal: 630, price: 3.5 },
+  "comida-11": { kcal: 560, price: 2.3 },
+  "comida-12": { kcal: 500, price: 2.15 },
+  "comida-13": { kcal: 600, price: 2.4 },
+  "comida-14": { kcal: 595, price: 2.85 },
+  "comida-15": { kcal: 690, price: 1.35 },
+  "comida-16": { kcal: 630, price: 2.55 },
+  "comida-17": { kcal: 500, price: 3.25 },
+  "comida-18": { kcal: 550, price: 2.0 },
+  "comida-19": { kcal: 790, price: 3.3 },
+  "comida-20": { kcal: 740, price: 2.75 },
+  "comida-21": { kcal: 630, price: 2.8 },
+  "comida-22": { kcal: 530, price: 1.8 },
+  "comida-23": { kcal: 550, price: 2.0 },
+  "comida-24": { kcal: 550, price: 2.35 },
+  "comida-25": { kcal: 610, price: 2.8 },
+
+  // Pre-entrenos
+  "pre-01": { kcal: 425, price: 1.4 },
+  "pre-02": { kcal: 335, price: 1.2 },
+  "pre-03": { kcal: 370, price: 1.05 },
+  "pre-04": { kcal: 425, price: 1.8 },
+  "pre-05": { kcal: 445, price: 1.5 },
+  "pre-06": { kcal: 395, price: 1.35 },
+  "pre-07": { kcal: 480, price: 1.65 },
+  "pre-08": { kcal: 550, price: 1.3 },
+
+  // Meriendas
+  "mer-01": { kcal: 250, price: 2.0 },
+  "mer-02": { kcal: 330, price: 1.25 },
+  "mer-03": { kcal: 220, price: 1.8 },
+  "mer-04": { kcal: 315, price: 1.1 },
+  "mer-05": { kcal: 270, price: 1.8 },
+  "mer-06": { kcal: 290, price: 2.2 },
+  "mer-07": { kcal: 345, price: 0.75 },
+  "mer-08": { kcal: 170, price: 0.55 },
+  "mer-09": { kcal: 250, price: 1.0 },
+  "mer-10": { kcal: 380, price: 2.3 },
+  "mer-11": { kcal: 365, price: 1.4 },
+  "mer-12": { kcal: 335, price: 2.05 },
+
+  // Cenas entreno
+  "cena-t-01": { kcal: 550, price: 3.95 },
+  "cena-t-02": { kcal: 355, price: 2.1 },
+  "cena-t-03": { kcal: 420, price: 1.7 },
+  "cena-t-04": { kcal: 335, price: 3.45 },
+  "cena-t-05": { kcal: 390, price: 2.5 },
+  "cena-t-06": { kcal: 445, price: 3.25 },
+  "cena-t-07": { kcal: 285, price: 2.15 },
+  "cena-t-08": { kcal: 380, price: 2.2 },
+  "cena-t-09": { kcal: 550, price: 3.45 },
+  "cena-t-10": { kcal: 360, price: 3.95 },
+  "cena-t-11": { kcal: 355, price: 1.85 },
+  "cena-t-12": { kcal: 230, price: 2.2 },
+  "cena-t-13": { kcal: 320, price: 2.85 },
+  "cena-t-14": { kcal: 515, price: 2.95 },
+  "cena-t-15": { kcal: 405, price: 2.55 },
+
+  // Cenas descanso (ñoquis)
+  "cena-r-01": { kcal: 530, price: 1.95 },
+  "cena-r-02": { kcal: 555, price: 2.1 },
+  "cena-r-03": { kcal: 590, price: 2.4 },
+  "cena-r-04": { kcal: 495, price: 2.2 },
+  "cena-r-05": { kcal: 540, price: 2.2 },
+  "cena-r-06": { kcal: 560, price: 2.3 },
+  "cena-r-07": { kcal: 560, price: 2.0 },
+  "cena-r-08": { kcal: 555, price: 2.25 },
+  "cena-r-09": { kcal: 540, price: 2.1 },
+  "cena-r-10": { kcal: 475, price: 2.1 },
+
+  // Comidas fáciles
+  "comida-facil-01": { kcal: 615, price: 1.75 },
+  "comida-facil-02": { kcal: 550, price: 2.65 },
+  "comida-facil-03": { kcal: 525, price: 1.95 },
+  "comida-facil-04": { kcal: 530, price: 2.25 },
+  "comida-facil-05": { kcal: 530, price: 1.45 },
+  "comida-facil-06": { kcal: 460, price: 1.65 },
+  "comida-facil-07": { kcal: 300, price: 2.0 },
+  "comida-facil-08": { kcal: 520, price: 2.4 },
+  "comida-facil-09": { kcal: 550, price: 2.65 },
+  "comida-facil-10": { kcal: 540, price: 2.4 },
+
+  // Cenas fáciles
+  "cena-facil-01": { kcal: 465, price: 2.8 },
+  "cena-facil-02": { kcal: 300, price: 1.7 },
+  "cena-facil-03": { kcal: 510, price: 3.55 },
+  "cena-facil-04": { kcal: 505, price: 2.5 },
+  "cena-facil-05": { kcal: 395, price: 2.0 },
+  "cena-facil-06": { kcal: 330, price: 2.0 },
+  "cena-facil-07": { kcal: 395, price: 3.5 },
+  "cena-facil-08": { kcal: 305, price: 3.05 },
+  "cena-facil-09": { kcal: 245, price: 2.2 },
+  "cena-facil-10": { kcal: 395, price: 2.15 },
+};
+
+export function getRecipeNutrition(id: string) {
+  return RECIPE_NUTRITION[id];
+}

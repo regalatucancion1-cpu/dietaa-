@@ -3,13 +3,19 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, X, Clock, Tag } from "lucide-react";
+import { ChefHat, Search, X, Clock, Tag, Flame, Euro } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { RECIPES, MEAL_LABELS, type Recipe } from "@/data/recipes";
+import {
+  RECIPES,
+  MEAL_LABELS,
+  RECIPE_NUTRITION,
+  type Recipe,
+} from "@/data/recipes";
 import type { MealType } from "@/types/diet";
 
 type FilterMeal = "all" | MealType;
 type FilterVariant = "all" | "training" | "rest";
+type SortBy = "default" | "kcal-asc" | "kcal-desc" | "price-asc" | "price-desc";
 
 const MEAL_FILTERS: { id: FilterMeal; label: string }[] = [
   { id: "all", label: "Todas" },
@@ -38,12 +44,13 @@ export default function RecipesPage() {
   const [meal, setMeal] = useState<FilterMeal>("all");
   const [variant, setVariant] = useState<FilterVariant>("all");
   const [easyOnly, setEasyOnly] = useState(false);
+  const [sortBy, setSortBy] = useState<SortBy>("default");
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return RECIPES.filter((r) => {
+    const base = RECIPES.filter((r) => {
       if (meal !== "all" && r.mealType !== meal) return false;
       if (variant !== "all" && r.variant !== variant && r.variant !== "both")
         return false;
@@ -54,7 +61,16 @@ export default function RecipesPage() {
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [meal, variant, easyOnly, search]);
+    if (sortBy === "default") return base;
+    const get = (r: Recipe, k: "kcal" | "price") =>
+      RECIPE_NUTRITION[r.id]?.[k] ?? Number.POSITIVE_INFINITY;
+    return [...base].sort((a, b) => {
+      if (sortBy === "kcal-asc") return get(a, "kcal") - get(b, "kcal");
+      if (sortBy === "kcal-desc") return get(b, "kcal") - get(a, "kcal");
+      if (sortBy === "price-asc") return get(a, "price") - get(b, "price");
+      return get(b, "price") - get(a, "price");
+    });
+  }, [meal, variant, easyOnly, sortBy, search]);
 
   const countsByMeal = useMemo(() => {
     const c: Record<string, number> = { all: RECIPES.length };
@@ -152,15 +168,29 @@ export default function RecipesPage() {
           </button>
         </div>
 
-        {/* Results */}
-        <div className="text-xs text-muted-foreground">
-          {filtered.length} {filtered.length === 1 ? "receta" : "recetas"}
+        {/* Results + Sort */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="text-xs text-muted-foreground">
+            {filtered.length} {filtered.length === 1 ? "receta" : "recetas"}
+          </div>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortBy)}
+            className="text-xs bg-white border border-border rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-orange-300"
+          >
+            <option value="default">Orden por defecto</option>
+            <option value="kcal-asc">Menos kcal primero</option>
+            <option value="kcal-desc">Más kcal primero</option>
+            <option value="price-asc">Más baratas primero</option>
+            <option value="price-desc">Más caras primero</option>
+          </select>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {filtered.map((r) => {
             const isOpen = openId === r.id;
             const badge = variantBadge(r.variant);
+            const nutri = RECIPE_NUTRITION[r.id];
             return (
               <Card key={r.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
@@ -175,8 +205,20 @@ export default function RecipesPage() {
                       {badge.label}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground mt-1">
+                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground mt-1 flex-wrap">
                     <span className="font-medium">{MEAL_LABELS[r.mealType]}</span>
+                    {nutri && (
+                      <>
+                        <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-orange-50 text-orange-700 font-medium">
+                          <Flame className="h-3 w-3" />
+                          {nutri.kcal} kcal
+                        </span>
+                        <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">
+                          <Euro className="h-3 w-3" />
+                          {nutri.price.toFixed(2)}
+                        </span>
+                      </>
+                    )}
                     {r.tags && r.tags.length > 0 && (
                       <span className="flex items-center gap-1">
                         <Tag className="h-3 w-3" />
