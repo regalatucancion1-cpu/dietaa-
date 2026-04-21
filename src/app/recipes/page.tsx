@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, X, Clock, Tag, Flame, Euro } from "lucide-react";
+import { ChefHat, Search, X, Clock, Tag, Flame, Euro, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   RECIPES,
@@ -11,6 +11,12 @@ import {
   RECIPE_NUTRITION,
   type Recipe,
 } from "@/data/recipes";
+import {
+  MEAL_TARGETS,
+  DAILY_TARGETS,
+  targetFor,
+  kcalFit,
+} from "@/data/meal-targets";
 import type { MealType } from "@/types/diet";
 
 type FilterMeal = "all" | MealType;
@@ -87,9 +93,67 @@ export default function RecipesPage() {
             Recetas
           </h1>
           <p className="text-sm text-muted-foreground">
-            100 ideas que encajan con tu pauta
+            120 ideas que encajan con tu pauta
           </p>
         </div>
+
+        {/* Targets card */}
+        <Card className="border-orange-100 bg-orange-50/40">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Target className="h-4 w-4 text-orange-500" />
+              Kcal objetivo por comida
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0 space-y-3 text-xs">
+            <div>
+              <div className="font-semibold text-foreground mb-1">
+                Día de entreno · {DAILY_TARGETS.training} kcal totales
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                {(
+                  ["desayuno", "comida", "pre_entreno", "cena"] as MealType[]
+                ).map((m) => {
+                  const t = MEAL_TARGETS.training[m];
+                  if (!t) return null;
+                  return (
+                    <div key={m} className="flex justify-between">
+                      <span className="text-muted-foreground">
+                        {MEAL_LABELS[m]}
+                      </span>
+                      <span className="font-medium text-orange-700">
+                        {t.min}–{t.max} kcal
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="border-t border-orange-100 pt-3">
+              <div className="font-semibold text-foreground mb-1">
+                Día de descanso · {DAILY_TARGETS.rest} kcal totales
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                {(["desayuno", "comida", "merienda", "cena"] as MealType[]).map(
+                  (m) => {
+                    const t = MEAL_TARGETS.rest[m];
+                    if (!t) return null;
+                    return (
+                      <div key={m} className="flex justify-between">
+                        <span className="text-muted-foreground">
+                          {MEAL_LABELS[m]}
+                        </span>
+                        <span className="font-medium text-blue-700">
+                          {t.min}–{t.max} kcal
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Search */}
         <div className="relative">
@@ -191,6 +255,10 @@ export default function RecipesPage() {
             const isOpen = openId === r.id;
             const badge = variantBadge(r.variant);
             const nutri = RECIPE_NUTRITION[r.id];
+            const dayType: "training" | "rest" =
+              r.variant === "rest" ? "rest" : "training";
+            const target = targetFor(r.mealType, dayType);
+            const fit = nutri && target ? kcalFit(nutri.kcal, target) : null;
             return (
               <Card key={r.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
@@ -209,9 +277,25 @@ export default function RecipesPage() {
                     <span className="font-medium">{MEAL_LABELS[r.mealType]}</span>
                     {nutri && (
                       <>
-                        <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-orange-50 text-orange-700 font-medium">
+                        <span
+                          className={cn(
+                            "flex items-center gap-0.5 px-1.5 py-0.5 rounded font-medium",
+                            fit === "under" && "bg-blue-50 text-blue-700",
+                            fit === "over" && "bg-red-50 text-red-700",
+                            fit === "ok" && "bg-green-50 text-green-700",
+                            !fit && "bg-orange-50 text-orange-700"
+                          )}
+                          title={
+                            target
+                              ? `Objetivo ${target.min}–${target.max} kcal`
+                              : undefined
+                          }
+                        >
                           <Flame className="h-3 w-3" />
                           {nutri.kcal} kcal
+                          {fit === "ok" && " ✓"}
+                          {fit === "under" && " ↓"}
+                          {fit === "over" && " ↑"}
                         </span>
                         <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">
                           <Euro className="h-3 w-3" />
