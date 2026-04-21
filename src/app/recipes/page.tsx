@@ -37,6 +37,7 @@ function variantBadge(variant: Recipe["variant"]) {
 export default function RecipesPage() {
   const [meal, setMeal] = useState<FilterMeal>("all");
   const [variant, setVariant] = useState<FilterVariant>("all");
+  const [easyOnly, setEasyOnly] = useState(false);
   const [search, setSearch] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -46,13 +47,14 @@ export default function RecipesPage() {
       if (meal !== "all" && r.mealType !== meal) return false;
       if (variant !== "all" && r.variant !== variant && r.variant !== "both")
         return false;
+      if (easyOnly && !r.tags?.includes("fácil")) return false;
       if (!q) return true;
       const hay = [r.name, ...(r.tags ?? []), ...r.ingredients]
         .join(" ")
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [meal, variant, search]);
+  }, [meal, variant, easyOnly, search]);
 
   const countsByMeal = useMemo(() => {
     const c: Record<string, number> = { all: RECIPES.length };
@@ -118,7 +120,7 @@ export default function RecipesPage() {
           })}
         </div>
 
-        {/* Variant filters */}
+        {/* Variant + Easy filters */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1">
           {VARIANT_FILTERS.map((v) => {
             const active = variant === v.id;
@@ -137,6 +139,17 @@ export default function RecipesPage() {
               </button>
             );
           })}
+          <button
+            onClick={() => setEasyOnly((v) => !v)}
+            className={cn(
+              "flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border whitespace-nowrap transition-colors",
+              easyOnly
+                ? "bg-green-500 text-white border-green-500"
+                : "bg-white text-muted-foreground border-border hover:border-green-200"
+            )}
+          >
+            ⚡ Solo fáciles
+          </button>
         </div>
 
         {/* Results */}
